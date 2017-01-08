@@ -1,4 +1,4 @@
 #!/bin/sh
 
 javac `ls ./*.java`
-java Jone9 1
+java ModelJone9 1
