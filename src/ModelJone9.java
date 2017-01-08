@@ -3,9 +3,13 @@
 import java.util.Observable;
 
 class ModelJone9 extends Observable {
+  private ViewClock needle;
+
   public ModelJone9(){
     this.debugMode = false;
     this.jumpStatus = 0;
+
+    needle = new ViewClock();
 
     defaultIdealSleep = (long)((1000 << 16) / fps);
     this.fpsThread = new FPSThread(this);
@@ -22,6 +26,8 @@ class ModelJone9 extends Observable {
     this();
     this.debugMode = true;
     System.out.println("[*] DEBUG MODE");
+
+    needle.setDebugMode(debugMode);
   }
 
 /**
@@ -32,6 +38,8 @@ class ModelJone9 extends Observable {
     if (this.debugMode){
       System.out.println("[*] heartbeats FPS = " + fpsThread.getFPS());
     }
+
+    needle.clockwise(currentTime);
 
     notifyObservers();
   }
