@@ -32,13 +32,16 @@ class ModelJone9 {
   }
 
 /**
- * jump() called by controller if actioned space
- * return jumpStatus
  * jumpStatus: not jumping = 0
  *             jumping > 0
  *             jumped < 0
  */
   int jumpStatus;
+
+/**
+ * jump() called by controller if actioned space
+ * @return jumpStatus
+ */
   public int jump(){
     setChanged();
     return jumpStatus;
