@@ -9,6 +9,12 @@ This project developed in a class of our university.
 ## tools
 
 
+## style
+
+- https://google.github.io/styleguide/javaguide.html
+- https://kazurof.github.io/GoogleJavaStyle-ja/
+
+java素人なのでpackageなどわからない点は後で
 
 ## author
 
