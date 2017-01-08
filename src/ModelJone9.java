@@ -2,7 +2,7 @@
 
 import java.util.Observable;
 
-
+import sun.nio.cs.ext.DoubleByte.Decoder_DBCSONLY;
 
 class ModelJone9 extends Observable {
   public ModelJone9(){
@@ -38,7 +38,7 @@ class ModelJone9 extends Observable {
  * gameUpdate() method called on fps procs
  * core
  */
-  public void gameUpdate(){
+  public void gameUpdate(long currentTime){
     if (this.debugMode == 1){
       System.out.println("[*] heartbeats FPS = " + fpsThread.getFPS());
     }
@@ -47,7 +47,7 @@ class ModelJone9 extends Observable {
   }
 
   private FPSThread fpsThread;
-  private static final float fps = 30;
+  private static final double fps = 30;
   private long defaultIdealSleep;  // ms
 
   public long getDefaultIdealSleep(){
@@ -74,7 +74,7 @@ class ModelJone9 extends Observable {
       while (true) {
         startTime = sleptTime;
 
-        gameModel.gameUpdate();
+        gameModel.gameUpdate(startTime >> 16);
 
         finishedTime = System.currentTimeMillis() << 16;
         sleepTime = gameModel.getDefaultIdealSleep() - (finishedTime - startTime) - error;
@@ -94,11 +94,11 @@ class ModelJone9 extends Observable {
 
 /**
  * 頭が働いてないので後で
- * @return float FPS
+ * @return double FPS
  */
-    public float getFPS(){
+    public double getFPS(){
       if (this.countFrame > 30){
-        float fps = ((startTime - countStart) >> 16) / this.countFrame;
+        double fps = (double)this.countFrame / ((startTime - countStart) >> 16) * 1000 ;
         // System.out.println(startTime);
         this.countStart = this.startTime;
         this.countFrame = 0;
