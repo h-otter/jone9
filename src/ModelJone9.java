@@ -35,8 +35,11 @@ class ModelJone9 extends Observable {
  * core
  */
   public void gameUpdate(long currentTime){
-    if (this.debugMode){
-      System.out.println("[*] heartbeats FPS = " + fpsThread.getFPS());
+    if (this.debugMode) {
+      double currentFPS = fpsThread.getFPS();
+      if (currentFPS != -1){
+        System.out.println("[*] heartbeats FPS = " + currentFPS);
+      }
     }
 
     needle.clockwise(currentTime);
@@ -103,7 +106,7 @@ class ModelJone9 extends Observable {
         return fps;
       }
       this.countFrame++;
-      return 0;
+      return -1;
     }
   }
 
