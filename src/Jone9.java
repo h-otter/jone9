@@ -1,6 +1,10 @@
 class Jone9 {
   private int debugMode;
 
+  public Jone9(){
+
+  }
+
   private Jone9(String debug){
     this();
 
@@ -14,10 +18,6 @@ class Jone9 {
     if (this.debugMode == 1){
       System.out.println("[*] DEBUG MODE");
     }
-  }
-
-  public Jone9(){
-
   }
 
   public static void main(String argv[]){
