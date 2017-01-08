@@ -5,11 +5,6 @@ import java.util.Observable;
 
 
 class ModelJone9 extends Observable {
-/**
- * when DEBUG MODE, debugMode set 1 on ModelJone9(String)
- */
-  private int debugMode;
-
   public ModelJone9(){
     this.jumpStatus = 0;
 
@@ -18,6 +13,12 @@ class ModelJone9 extends Observable {
     this.fpsThread.start();
   }
 
+  private int debugMode;
+
+/**
+ * when DEBUG MODE, calling ModelJone9(String)
+ * @param debug set debugMode 1
+ */
   private ModelJone9(String debug){
     this();
 
