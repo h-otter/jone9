@@ -1,11 +1,15 @@
-class Jone9 {
+package Jone9;
+
+import java.util.*;
+
+class ModelJone9 {
   private int debugMode;
 
-  public Jone9(){
-
+  public ModelJone9(){
+    this.jumpStatus = 0;
   }
 
-  private Jone9(String debug){
+  private ModelJone9(String debug){
     this();
 
     try {
@@ -18,6 +22,26 @@ class Jone9 {
     if (this.debugMode == 1){
       System.out.println("[*] DEBUG MODE");
     }
+  }
+
+/**
+ * run() method called on fps procs
+ */
+  private void run(){
+    notifyObservers();
+  }
+
+/**
+ * jump() called by controller if actioned space
+ * return jumpStatus
+ * jumpStatus: not jumping = 0
+ *             jumping > 0
+ *             jumped < 0
+ */
+  int jumpStatus;
+  public int jump(){
+    setChanged();
+    return jumpStatus;
   }
 
   public static void main(String argv[]){
