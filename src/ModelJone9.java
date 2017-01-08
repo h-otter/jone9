@@ -2,10 +2,9 @@
 
 import java.util.Observable;
 
-import sun.nio.cs.ext.DoubleByte.Decoder_DBCSONLY;
-
 class ModelJone9 extends Observable {
   public ModelJone9(){
+    this.debugMode = false;
     this.jumpStatus = 0;
 
     defaultIdealSleep = (long)((1000 << 16) / fps);
@@ -13,7 +12,7 @@ class ModelJone9 extends Observable {
     this.fpsThread.start();
   }
 
-  private int debugMode;
+  private boolean debugMode;
 
 /**
  * when DEBUG MODE, calling ModelJone9(String)
@@ -21,17 +20,8 @@ class ModelJone9 extends Observable {
  */
   private ModelJone9(String debug){
     this();
-
-    try {
-      this.debugMode = Integer.parseInt(debug);
-    } catch (NumberFormatException e) {
-      System.out.println("[-] if you want to use DEBUG MODE, please set argv to 1");      
-      System.exit(1);
-    }
-
-    if (this.debugMode == 1){
-      System.out.println("[*] DEBUG MODE");
-    }
+    this.debugMode = true;
+    System.out.println("[*] DEBUG MODE");
   }
 
 /**
@@ -39,7 +29,7 @@ class ModelJone9 extends Observable {
  * core
  */
   public void gameUpdate(long currentTime){
-    if (this.debugMode == 1){
+    if (this.debugMode){
       System.out.println("[*] heartbeats FPS = " + fpsThread.getFPS());
     }
 
@@ -59,6 +49,7 @@ class ModelJone9 extends Observable {
 
     public FPSThread(ModelJone9 origin){
       this.gameModel = origin;
+      this.startTime = 0;
       this.countStart = 0;
       this.countFrame = 0;
     }
@@ -93,7 +84,6 @@ class ModelJone9 extends Observable {
     private long countStart;
 
 /**
- * 頭が働いてないので後で
  * @return double FPS
  */
     public double getFPS(){
