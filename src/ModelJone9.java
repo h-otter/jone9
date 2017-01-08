@@ -1,8 +1,10 @@
 package Jone9;
 
-import java.util.*;
+import java.util.Observable;
 
-class ModelJone9 {
+
+
+class ModelJone9 extends Observable {
   private int debugMode;
 
   public ModelJone9(){
@@ -49,9 +51,9 @@ class ModelJone9 {
 
   public static void main(String argv[]){
     if (argv.length >= 1){
-      new Jone9(argv[0]);
+      new ModelJone9(argv[0]);
     } else {
-      new Jone9();
+      new ModelJone9();
     }
   }
 }
