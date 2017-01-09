@@ -75,4 +75,11 @@ class ViewClock implements Observer {
   private float speed;
 
   private void changeClockwise(){}
+
+/**
+ * if finished game, call this
+ */
+  public void finished(){
+
+  }
 }
