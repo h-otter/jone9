@@ -3,13 +3,14 @@
 import java.util.Observable;
 
 class ModelJone9 extends Observable {
-  private ViewClock needle;
+  private ViewClock needle, needleGround;
 
   public ModelJone9(){
     this.debugMode = false;
     this.jumpStatus = 0;
 
     needle = new ViewClock();
+    needleGround = new ViewClck();
 
     defaultIdealSleep = (long)((1000 << 16) / fps);
     this.fpsThread = new FPSThread(this);
