@@ -29,6 +29,7 @@ class ModelJone9 extends Observable {
     System.out.println("[*] DEBUG MODE");
 
     needle.setDebugMode(debugMode);
+    needleGround.setDebugMode(debugMode);
   }
 
 /**
@@ -44,6 +45,7 @@ class ModelJone9 extends Observable {
     }
 
     needle.clockwise(currentTime);
+    needleGround.clockwise(currentTime);
 
     notifyObservers();
   }
@@ -60,6 +62,8 @@ class ModelJone9 extends Observable {
     private ModelJone9 gameModel;
 
     public FPSThread(ModelJone9 origin){
+      this();
+
       this.gameModel = origin;
       this.startTime = 0;
       this.countStart = 0;
