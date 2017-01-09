@@ -5,13 +5,14 @@ import java.util.Observable;
 class ModelJone9 extends Observable {
   private ViewClock needle;
   private ViewClock needleGround;
+  private ViewPlayer player;
 
   public ModelJone9(){
     this.debugMode = false;
-    this.jumpStatus = 0;
 
     needle = new ViewClock();
     needleGround = new ViewClock();
+    player = new ViewPlayer();
 
     defaultIdealSleep = (long)((1000 << 16) / fps);
     this.fpsThread = new FPSThread(this);
@@ -115,19 +116,15 @@ class ModelJone9 extends Observable {
   }
 
 /**
- * jumpStatus: not jumping = 0
- *             jumping > 0
- *             jumped < 0
- */
-  int jumpStatus;
-
-/**
  * jump() called by controller if actioned space
  * @return jumpStatus
  */
   public int jump(){
-    setChanged();
-    return jumpStatus;
+    return player.jump();
+  }
+
+  public void finish(){
+    setChanged();    
   }
 
   public static void main(String argv[]){

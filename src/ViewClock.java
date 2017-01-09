@@ -79,7 +79,7 @@ class ViewClock implements Observer {
 /**
  * if finished game, call this
  */
-  public void finished(){
+  public void finish(){
 
   }
 }
