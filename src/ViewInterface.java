@@ -12,6 +12,7 @@ interface ViewInterface {
 
 /**
  * called per frame
+ * @param long currentTime
  */
   public void running(long currentTime);
 }
