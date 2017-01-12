@@ -1,8 +1,10 @@
+import java.util.ArrayList;
+import java.util.List;
+
 // package Jone9;
 
-import java.util.Observable;
-
-class ModelJone9 extends Observable {
+class ModelJone9 {
+  private List<ViewInterface> viewObjs;
   private ViewClock needle;
   private ViewClock needleGround;
   private ViewPlayer player;
@@ -13,6 +15,11 @@ class ModelJone9 extends Observable {
     needle = new ViewClock();
     needleGround = new ViewClock();
     player = new ViewPlayer();
+
+    viewObjs = new ArrayList<ViewInterface>();
+    viewObjs.add((ViewInterface)needle);
+    viewObjs.add((ViewInterface)needleGround);
+    viewObjs.add((ViewInterface)player);
 
     defaultIdealSleep = (long)((1000 << 16) / fps);
     this.fpsThread = new FPSThread(this);
@@ -30,8 +37,10 @@ class ModelJone9 extends Observable {
     this.debugMode = true;
     System.out.println("[*] DEBUG MODE");
 
-    needle.setDebugMode(debugMode);
-    needleGround.setDebugMode(debugMode);
+
+    for (int i = 0; i < this.viewObjs.size(); ++i){
+      this.viewObjs.get(i).setDebugMode(this.debugMode);
+    }
   }
 
 /**
@@ -46,10 +55,9 @@ class ModelJone9 extends Observable {
       }
     }
 
-    needle.clockwise(currentTime);
-    needleGround.clockwise(currentTime);
-
-    notifyObservers();
+    for (int i = 0; i < this.viewObjs.size(); ++i){
+      this.viewObjs.get(i).running(currentTime);
+    }
   }
 
   private FPSThread fpsThread;
@@ -124,7 +132,9 @@ class ModelJone9 extends Observable {
   }
 
   public void finish(){
-    setChanged();    
+    for (int i = 0; i < this.viewObjs.size(); ++i){
+      this.viewObjs.get(i).finish();
+    }
   }
 
   public static void main(String argv[]){

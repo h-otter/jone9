@@ -2,16 +2,16 @@ import java.util.Observer;
 
 
 
-class ViewPlayer implements Observer {
+class ViewPlayer implements ViewInterface {
   public ViewPlayer(){
 
   }
 
-  @Override
-  public void update(Observable o, Object arg){
-    
-  }
+  public void setDebugMode(boolean debug){}
 
+  @Override
+  public void running(long currentTime){
+  }
 
 /**
  * jumpStatus: not jumping = 0

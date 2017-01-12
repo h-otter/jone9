@@ -2,7 +2,7 @@ import java.util.Observer;
 import java.util.Observable;
 import java.util.Random;
 
-class ViewClock implements Observer {
+class ViewClock implements ViewInterface {
   public ViewClock(){
     this.rng = new Random(System.currentTimeMillis());
 
@@ -17,8 +17,8 @@ class ViewClock implements Observer {
   }
 
   @Override
-  public void update(Observable o, Object arg){
-    
+  public void running(long currentTime){
+    this.clockwise(currentTime);
   }
 
   private static final int defaultMaxChangeMilliSec = 15000;
