@@ -2,18 +2,40 @@ import java.util.Observer;
 import java.util.Observable;
 import java.util.Random;
 
+import javax.media.j3d.BranchGroup;
+import javax.media.j3d.TransformGroup;
+import javax.media.j3d.Transform3D;
+
 class ViewClock implements ViewInterface {
-  public ViewClock(){
+  private ViewClock(){}
+
+  private TransformGroup tg;
+  private Transform3D tf;
+  public ViewClock(BranchGroup parentGroup){
     this.rng = new Random(System.currentTimeMillis());
 
     this.maxChangeMilliSec = defaultMaxChangeMilliSec; 
     this.minChangeMilliSec = defaultMinChangeMilliSec; 
     this.lastChangedMillSec = 0;
+
+    tg = new TransformGroup();
+    tf = new Transform3D();
+    tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+    tg.addChild(tf);
+    parentGroup.addChild(tg);
+
+    rotValue = 0;
+    tf.set(new Vector3d(0.0, 10, 0.0));
+    tg.setTransform(tf);
   }
 
   private boolean debugMode;
   public void setDebugMode(boolean debug){
     this.debugMode = debug;
+  }
+
+  public TransformGroup getTg(){
+    return tg;
   }
 
   @Override
@@ -28,6 +50,7 @@ class ViewClock implements ViewInterface {
   private long lastChangedMillSec;
   private Random rng;
 
+  private double rotValue;
 /**
  * deside whether change speed or not
  *
@@ -50,6 +73,10 @@ class ViewClock implements ViewInterface {
       changeClockwise();
       recalcParams();
     }
+
+    rotValue += speed;
+    tf.rotY(rotValue);
+    tg.setTransform(tf);
   }
 
   private final static double maxParam = 0.93;
@@ -71,8 +98,8 @@ class ViewClock implements ViewInterface {
     }
   }
 
-  private static final float speedRange = 1;
-  private float speed;
+  private static final double speedRange = 1;
+  private double speed;
 
   private void changeClockwise(){}
 
