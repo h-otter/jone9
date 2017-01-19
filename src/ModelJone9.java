@@ -7,30 +7,23 @@ import javax.vecmath.*;
 import com.sun.j3d.utils.universe.*;
 import com.sun.j3d.utils.geometry.*;
 
-// import java.awt;
-// import java.awt.event;
-
-// import javax.swing;
-// import javax.swing.event;
+import java.awt.*;
+import javax.swing.*;
 
 // package Jone9;
 
-class ModelJone9 {
+class ModelJone9 extends JFrame {
   private List<ViewInterface> viewObjs;
   private ViewClock needle;
   private ViewClock needleGround;
   private ViewPlayer player;
+  private CtlPlayer ctlPlayer;
 
   SimpleUniverse universe;
   BranchGroup bg;
 
   public ModelJone9(){
     this.debugMode = false;
-
-    // fps iint
-    defaultIdealSleep = (long)((1000 << 16) / fps);
-    this.fpsThread = new FPSThread(this);
-    this.fpsThread.start();
 
     // create frame
     this.setTitle("Press SPACE!");
@@ -39,6 +32,8 @@ class ModelJone9 {
     //コンテントペインを作成
     JPanel cp = new JPanel();
     cp.setLayout(null);
+    ctlPlayer = new CtlPlayer(this);
+    this.addKeyListener(ctlPlayer);
     this.add(cp);
 
     // java3d 1st init
@@ -48,11 +43,10 @@ class ModelJone9 {
     cp.add(canvas);
     universe = new SimpleUniverse(canvas);
     bg = new BranchGroup();
-    ColorCube sp = new ColorCube(0.1f);
 
     // object init
-    needle = new ViewClock(bg);
-    needleGround = new ViewClock(bg);
+    needle = new ViewClock(bg, 1.0);
+    needleGround = new ViewClock(bg, 0);
     player = new ViewPlayer(needleGround.getTg());
 
     viewObjs = new ArrayList<ViewInterface>();
@@ -79,6 +73,11 @@ class ModelJone9 {
     view_pos.mul(view_dir);
     //カメラの位置情報を登録
     Camera.setTransform(view_pos);
+
+    // fps iint
+    defaultIdealSleep = (long)((1000 << 16) / fps);
+    this.fpsThread = new FPSThread(this);
+    this.fpsThread.start();
 
     //ウィンドウを可視化
     this.setVisible(true);

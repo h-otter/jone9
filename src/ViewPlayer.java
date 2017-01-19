@@ -1,23 +1,27 @@
-import java.util.Observer;
+import com.sun.j3d.utils.geometry.ColorCube;
 
-import javax.media.j3d.Transform3D;
+import javax.media.j3d.BranchGroup;
 import javax.media.j3d.TransformGroup;
+import javax.media.j3d.Transform3D;
+import javax.vecmath.*;
 
-
-
-class ViewPlayer extends JFrame implements ViewInterface {
-  private ViewPlayer();
+class ViewPlayer implements ViewInterface {
+  private ViewPlayer(){}
 
   TransformGroup tg;
   Transform3D tf;
   public ViewPlayer(TransformGroup parentGroup){
     count = 0;
 
+    ColorCube testCube = new ColorCube(0.1f);
     tg = new TransformGroup();
-    tf = new Transform3D();
     tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-    tg.addChild(tf);
+    tg.addChild(testCube);
     parentGroup.addChild(tg);
+
+    tf = new Transform3D();
+    tf.set(new Vector3d(10, 0.0, 0.0));
+    tg.setTransform(tf);
   }
 
   public void setDebugMode(boolean debug){}

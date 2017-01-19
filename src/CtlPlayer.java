@@ -5,7 +5,6 @@ class CtlPlayer implements KeyListener {
   private ModelJone9 parent;
   public CtlPlayer(ModelJone9 parent){
     this.parent = parent;
-    this.addKeyListener(parent);
   }
 
 /**

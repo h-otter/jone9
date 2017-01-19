@@ -1,31 +1,33 @@
-import java.util.Observer;
-import java.util.Observable;
 import java.util.Random;
+
+import com.sun.j3d.utils.geometry.ColorCube;
 
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.TransformGroup;
 import javax.media.j3d.Transform3D;
+import javax.vecmath.*;
 
 class ViewClock implements ViewInterface {
   private ViewClock(){}
 
   private TransformGroup tg;
   private Transform3D tf;
-  public ViewClock(BranchGroup parentGroup){
+  public ViewClock(BranchGroup parentGroup, double defaultPoint){
     this.rng = new Random(System.currentTimeMillis());
 
-    this.maxChangeMilliSec = defaultMaxChangeMilliSec; 
-    this.minChangeMilliSec = defaultMinChangeMilliSec; 
+    this.maxChangeMilliSec = defaultMaxChangeMilliSec;
+    this.minChangeMilliSec = defaultMinChangeMilliSec;
     this.lastChangedMillSec = 0;
 
+    ColorCube testCube = new ColorCube(0.1f);
     tg = new TransformGroup();
-    tf = new Transform3D();
     tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-    tg.addChild(tf);
+    tg.addChild(testCube);
     parentGroup.addChild(tg);
 
     rotValue = 0;
-    tf.set(new Vector3d(0.0, 10, 0.0));
+    tf = new Transform3D();
+    tf.set(new Vector3d(0.0, defaultPoint, 0.0));
     tg.setTransform(tf);
   }
 
