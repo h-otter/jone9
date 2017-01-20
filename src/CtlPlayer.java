@@ -13,20 +13,20 @@ class CtlPlayer implements KeyListener {
   private boolean hasBeenReleased;
 
   public void keyPressed(KeyEvent e){
-    //長押しが終わるまでキー入力を無効にする
-    if(hasBeenReleased){
-      hasBeenReleased = false;
-
-      //スペースキーの検知
-      if(e.getKeyCode()==e.VK_SPACE){
-        parent.jump();
-      }
+    if(e.getKeyCode()==e.VK_SPACE){
+      parent.jump();
     }
+    // //長押しが終わるまでキー入力を無効にする
+    // if(hasBeenReleased){
+    //   // hasBeenReleased = false;
+
+    //   //スペースキーの検知
+    // }
   }
 
   public void keyReleased(KeyEvent e){
     //長押しが終わったらキー入力を有効にする
-    hasBeenReleased = true;
+    // hasBeenReleased = true;
   }
 
   public void keyTyped(KeyEvent e){

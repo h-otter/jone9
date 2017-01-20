@@ -27,7 +27,7 @@ class ModelJone9 extends JFrame {
 
     // create frame
     this.setTitle("Press SPACE!");
-    this.setSize(400,600);
+    this.setSize(1280,720);
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     //コンテントペインを作成
     JPanel cp = new JPanel();
@@ -39,14 +39,14 @@ class ModelJone9 extends JFrame {
     // java3d 1st init
     GraphicsConfiguration g_config = SimpleUniverse.getPreferredConfiguration();
     Canvas3D canvas = new Canvas3D(g_config);
-    canvas.setBounds(0,0,400,600);
+    canvas.setBounds(0, 0, 1280, 720);
     cp.add(canvas);
     universe = new SimpleUniverse(canvas);
     bg = new BranchGroup();
 
     // object init
-    needle = new ViewClock(bg, 1.0);
-    needleGround = new ViewClock(bg, 0);
+    needle = new ViewClock(bg, 1f);
+    needleGround = new ViewClock(bg, 0f);
     player = new ViewPlayer(needleGround.getTg());
 
     viewObjs = new ArrayList<ViewInterface>();
@@ -60,7 +60,7 @@ class ModelJone9 extends JFrame {
     ViewingPlatform vp = universe.getViewingPlatform();  //視点についてのハードウェア情報を取得
     TransformGroup Camera = vp.getViewPlatformTransform();  //視点のための座標変換クラスを用意
     Transform3D view_pos = new Transform3D();  //カメラの位置ベクトル
-    Vector3f pos_vec = new Vector3f(1.4f,1.4f,1.4f);  //カメラの位置を決める
+    Vector3f pos_vec = new Vector3f(5f, 5f, 5f);  //カメラの位置を決める
     view_pos.setTranslation(pos_vec);  //カメラの位置について、座標変換実行
     //カメラの向きを示すベクトル
     Transform3D view_dir = new Transform3D();
