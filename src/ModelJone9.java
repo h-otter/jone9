@@ -24,6 +24,7 @@ class ModelJone9 extends JFrame {
 
   public ModelJone9(){
     this.debugMode = false;
+    jumping = false;
 
     // create frame
     this.setTitle("Press SPACE!");
@@ -47,7 +48,7 @@ class ModelJone9 extends JFrame {
     bg = new BranchGroup();
 
     // object init
-    needle = new ViewClock(bg, 1f);
+    needle = new ViewClock(bg, 0.3f);
     needleGround = new ViewClock(bg, 0f);
     player = new ViewPlayer(needleGround.getTg());
 
@@ -118,6 +119,9 @@ class ModelJone9 extends JFrame {
     for (int i = 0; i < this.viewObjs.size(); ++i){
       this.viewObjs.get(i).running(currentTime);
     }
+    if (this.jumping){
+      this.player.jump();
+    }
   }
 
   private FPSThread fpsThread;
@@ -186,12 +190,18 @@ class ModelJone9 extends JFrame {
     }
   }
 
+  private boolean jumping;
 /**
  * jump() called by controller if actioned space
  * @return jumpStatus
  */
-  public int jump(){
-    return player.jump();
+  public void jump(){
+    this.jumping = true;
+  }
+
+  public void jumped(){
+    this.jumping = false;
+    player.jumped();
   }
 
   public void finish(){
