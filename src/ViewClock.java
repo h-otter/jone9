@@ -65,6 +65,7 @@ class ViewClock implements ViewInterface {
  * -> in this case, not change clockwise speed
  * -> binomial distribution
  *
+ * -> change to sigmoid
  * @param currentTime start proc time
  */
   public void clockwise(long currentTime) {
@@ -78,6 +79,7 @@ class ViewClock implements ViewInterface {
     }
 
     rotValue += speed;
+    // rotValue %= Math.PI * 2;
     tf.rotY(rotValue);
     tg.setTransform(tf);
   }
@@ -105,7 +107,7 @@ class ViewClock implements ViewInterface {
   private double speed;
 
   private void changeClockwise(){
-    speed *= 2;    
+    // speed *= 2;    
   }
 
 /**
