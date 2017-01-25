@@ -14,3 +14,8 @@ hs_err_pid*
 src/*.jar
 src/*.dll
 src/*.so
+
+# eclipse project settings #
+*.project
+*.classpath
+.settings/
