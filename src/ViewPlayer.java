@@ -40,17 +40,18 @@ class ViewPlayer implements ViewInterface {
 
 /**
  * fall with this formula when jumped
- * y = graphA * x ^ 2 + graphB
+ * y = graphA * (jumpStatus - jumpStatusError) ^ 2 + graphB
  */
-  private double graphA;
+  private final static double graphA = -0.7 / 1000;
   private double graphB;
+  private double jumpStatusError;  
 
   @Override
   public void running(long currentTime){
     if (this.jumpStatus > 0){
       this.jumpStatus--;
-      this.distance -= this.defaultDistance;
-      // this.distance = this.graphA * Math.pow(this.jumpStatus + this.jumpMaxFrames - 2, 2) + this.graphB;
+      // this.distance -= this.defaultDistance;
+      this.distance = this.graphA * Math.pow(this.jumpStatus - this.jumpStatusError, 2) + this.graphB;
       if (this.jumpStatus == 0){
         this.distance = 0;
       }
@@ -114,11 +115,14 @@ class ViewPlayer implements ViewInterface {
     return jumpStatus;
   }
 
+/**
+ * recalc formula of falling
+ */
   private final static double jumpSpan = 0.05;
   private void changeJumpStatus(){
-      // this.graphB = this.distance + jumpSpan;
-      // this.graphA = -this.defaultDistance / this.jumpStatus / 2;
-      this.jumpStatus *= -1;
+    this.graphB = this.distance + this.jumpSpan;
+    this.jumpStatusError = Math.sqrt(-(this.jumpSpan + this.distance) / this.graphA);
+    this.jumpStatus = (int)(Math.sqrt(-this.jumpSpan / this.graphA) + Math.sqrt(-(this.jumpSpan + this.distance) / this.graphA));
   }
 
   public void finish(){
