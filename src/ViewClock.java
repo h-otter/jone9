@@ -104,7 +104,9 @@ class ViewClock implements ViewInterface {
   private static final double speedRange = 1;
   private double speed;
 
-  private void changeClockwise(){}
+  private void changeClockwise(){
+    speed *= 2;    
+  }
 
 /**
  * if finished game, call this

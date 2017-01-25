@@ -42,6 +42,8 @@ class ModelJone9 extends JFrame {
     canvas.setBounds(0, 0, 1280, 720);
     cp.add(canvas);
     universe = new SimpleUniverse(canvas);
+    universe.getViewingPlatform().setNominalViewingTransform();
+    universe.getViewer().getView().setMinimumFrameCycleTime(30);
     bg = new BranchGroup();
 
     // object init
@@ -151,6 +153,9 @@ class ModelJone9 extends JFrame {
 
         finishedTime = System.currentTimeMillis() << 16;
         sleepTime = gameModel.getDefaultIdealSleep() - (finishedTime - startTime) - error;
+        if (sleepTime < 0){
+          sleepTime = 0;
+        }
         try {
           this.sleep(sleepTime >> 16);
         } catch (InterruptedException e) {
