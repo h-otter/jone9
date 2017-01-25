@@ -32,7 +32,7 @@ class ViewPlayer implements ViewInterface {
     this.debugMode = debug;
   }
 
-  private final static int jumpMaxFrames = 30;
+  private final static int jumpMaxFrames = 20;
   @Override
   public void running(long currentTime){
     if (this.jumpStatus < 0){
@@ -40,6 +40,10 @@ class ViewPlayer implements ViewInterface {
       this.tf.set(new Vector3d(0.0, distance, defaultLength));
       this.tg.setTransform(tf);
       this.jumpStatus++;
+
+      if (this.jumpStatus == 0){
+        this.distance = 0;
+      }
       if (debugMode) {
         System.out.println("[+] jumped status = " + this.jumpStatus);
       }
@@ -57,7 +61,7 @@ class ViewPlayer implements ViewInterface {
  * player jump distance per frame
  */
   private double distance;
-  private final static double defaultDistance = 0.02;
+  private final static double defaultDistance = 0.03;
 
 /**
  * @return jumpStatus
