@@ -6,8 +6,14 @@ import javax.media.j3d.Transform3D;
 import javax.vecmath.*;
 
 class ViewPlayer implements ViewInterface {
+/**
+ * disabled default constructor
+ */
   private ViewPlayer(){}
 
+/**
+ * how far from center of clock
+ */
   private static double defaultLength = 1.0;
 
   TransformGroup tg;
@@ -32,18 +38,25 @@ class ViewPlayer implements ViewInterface {
     this.debugMode = debug;
   }
 
-  private final static int jumpMaxFrames = 20;
+/**
+ * fall with this formula when jumped
+ * y = graphA * x ^ 2 + graphB
+ */
+  private double graphA;
+  private double graphB;
+
   @Override
   public void running(long currentTime){
-    if (this.jumpStatus < 0){
+    if (this.jumpStatus > 0){
+      this.jumpStatus--;
       this.distance -= this.defaultDistance;
-      this.tf.set(new Vector3d(0.0, distance, defaultLength));
-      this.tg.setTransform(tf);
-      this.jumpStatus++;
-
+      // this.distance = this.graphA * Math.pow(this.jumpStatus + this.jumpMaxFrames - 2, 2) + this.graphB;
       if (this.jumpStatus == 0){
         this.distance = 0;
       }
+      this.tf.set(new Vector3d(0.0, distance, defaultLength));
+      this.tg.setTransform(tf);
+
       if (debugMode) {
         System.out.println("[+] jumped status = " + this.jumpStatus);
       }
@@ -62,25 +75,25 @@ class ViewPlayer implements ViewInterface {
  */
   private double distance;
   private final static double defaultDistance = 0.03;
+  private final static int jumpMaxFrames = 20;  
 
 /**
+ * if key pressed, this method is called
  * @return jumpStatus
  */
   public int jump(){
-    if (this.jumpStatus < 0){
+    if (this.jumpStatus > 0){
       return this.jumpStatus;
     }
-    if (this.jumpStatus > jumpMaxFrames){
-      this.jumpStatus *= -1;
+    if (this.jumpStatus < -jumpMaxFrames){
+      this.changeJumpStatus();
+      return this.jumpStatus;
     }
     
-    // //objectのy座標を計算(単純な放物線 y = -(x - 0.7)^2 + 0.49 )
-    // double distance = -0.002222223 * Math.pow((jumpStatus + 15), 2) + 0.5;
-
     this.distance += this.defaultDistance;
     this.tf.set(new Vector3d(0.0, distance, defaultLength));
     this.tg.setTransform(tf);
-    this.jumpStatus++;
+    this.jumpStatus--;
 
     if (this.debugMode) {
       System.out.println("[+] jumping status = " + this.jumpStatus);
@@ -89,11 +102,23 @@ class ViewPlayer implements ViewInterface {
     return jumpStatus;
   }
 
+/**
+ * if key released, this method is called
+ */
   public int jumped(){
-    if (this.jumpStatus > 0){
-      this.jumpStatus *= -1;
+    if (this.jumpStatus < 0){
+      this.changeJumpStatus();
+      System.out.println("[*] graphA = " + this.graphA + ", graphB = " + this.graphB);
     }
+
     return jumpStatus;
+  }
+
+  private final static double jumpSpan = 0.05;
+  private void changeJumpStatus(){
+      // this.graphB = this.distance + jumpSpan;
+      // this.graphA = -this.defaultDistance / this.jumpStatus / 2;
+      this.jumpStatus *= -1;
   }
 
   public void finish(){
