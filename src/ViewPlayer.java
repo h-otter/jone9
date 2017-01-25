@@ -25,9 +25,10 @@ class ViewPlayer implements ViewInterface {
     playerObj po = new playerObj("assets/model.obj", ObjectFile.RESIZE);
 	tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
 	tg.addChild(po.getSceneGroup());
+	parentGroup.addChild(tg);
 
     tf = new Transform3D();
-    tf.set(new Vector3d(0, 0.0, defaultLength));
+    tf.setTranslation(new Vector3d(0.0, 0.0, defaultLength));
     tg.setTransform(tf);
   }
 

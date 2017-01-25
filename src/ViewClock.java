@@ -33,7 +33,7 @@ class ViewClock implements ViewInterface {
     rotValue = 0;
     speed = Math.PI * 2 / 30;
     tf = new Transform3D();
-    tf.set(new Vector3d(defaultPoint, 0.0, 0.0));
+    tf.setTranslation(new Vector3d(defaultPoint, 0.0, 0.0));
     tg.setTransform(tf);
   }
 
