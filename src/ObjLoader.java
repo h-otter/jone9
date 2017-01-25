@@ -14,10 +14,10 @@ import com.sun.j3d.utils.image.TextureLoader;
 import com.sun.j3d.utils.geometry.*;
 import java.awt.GraphicsConfiguration;
 
-/* 
- * 
+/**
+ * load obj file
  */
-public class playerObj {
+public class ObjLoader {
 	private Canvas3D c3d;
 	private ObjectFile f;
 	private Scene s;
@@ -25,38 +25,34 @@ public class playerObj {
 	private BranchGroup rootObj;
 	private TransformGroup trans;
 	
-	public playerObj(String filename, int arg){
-        trans = new TransformGroup();
+	private ObjLoader(){}
+	
+	public ObjLoader(String filename, int arg){
+    trans = new TransformGroup();
 		f = new ObjectFile(arg);
 		rootObj = new BranchGroup();
 		
-		try
-        {
-        	// 読んでシーンに貼り付け
-            s = f.load(filename);
-            System.out.println("model: "+filename+" loaded.");
-        }
-        catch(Exception e)
-        {
-        	e.printStackTrace();
-            System.exit(1);
-        }
-        trans.addChild(s.getSceneGroup());
+		try {
+			// 読んでシーンに貼り付け
+			s = f.load(filename);
+			System.out.println("model: " + filename + " loaded.");
+    }
+		catch(Exception e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+		trans.addChild(s.getSceneGroup());
 	}
 	
-	public void addBounds(Bounds bounds)
-	{
+	public void addBounds(Bounds bounds) {
 		b = bounds;
 	}
 	
-	public Node getSceneGroup()
-	{
+	public Node getSceneGroup() {
 		return s.getSceneGroup();
 	}
 	
-	public TransformGroup getTransformGroup()
-	{
+	public TransformGroup getTransformGroup() {
 		return trans;
 	}
-	
 }

@@ -9,29 +9,26 @@ import javax.vecmath.*;
 class ViewPlayer implements ViewInterface {
   private ViewPlayer(){}
 
-  private static double defaultLength = 1.0;
+  private static double defaultLength = -1.1;
+  private static double defaultScale = 0.2;
+  private static double defaultHeight = 0.25;
 
   TransformGroup tg;
   Transform3D tf;
-  Transform3D tf_; // local TG for scaling, local position
+  Transform3D tfScale; // local TG for scaling, local position
   public ViewPlayer(TransformGroup parentGroup){
     this.jumpStatus = 0;
     this.distance = 0;
 
-//    ColorCube testCube = new ColorCube(0.1f);
-//    tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-//    tg.addChild(testCube);
-//    parentGroup.addChild(tg);
     tg = new TransformGroup();
-    playerObj po = new playerObj("assets/model.obj", ObjectFile.RESIZE);
-	tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-	//tg.addChild(po.getSceneGroup());
+    ObjLoader po = new ObjLoader("assets/model.obj", ObjectFile.RESIZE);
+  	tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
     tg.addChild(po.getTransformGroup());
-    tf_ = new Transform3D();
-    tf_.setTranslation(new Vector3d(0.0, 0.2, 0.0));
-    tf_.setScale(0.2); // 縮小表示
-    po.getTransformGroup().setTransform(tf_);
-	parentGroup.addChild(tg);
+    tfScale = new Transform3D();
+    tfScale.setTranslation(new Vector3d(0.0, defaultHeight, 0.0));
+    tfScale.setScale(this.defaultScale); // 縮小表示
+    po.getTransformGroup().setTransform(tfScale);
+	  parentGroup.addChild(tg);
 
     tf = new Transform3D();
     tf.setTranslation(new Vector3d(0.0, 0.0, defaultLength));

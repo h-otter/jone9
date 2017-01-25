@@ -21,14 +21,9 @@ class ViewClock implements ViewInterface {
     this.minChangeMilliSec = defaultMinChangeMilliSec;
     this.lastChangedMillSec = 0;
 
-    //ColorCube testCube = new ColorCube(0.1f);
-    //tg = new TransformGroup();
-    //tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-    //tg.addChild(testCube);
     tg = new TransformGroup();
-    playerObj po = new playerObj("assets/arrow2_fix.obj", ObjectFile.RESIZE);
-	tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-	//tg.addChild(po.getSceneGroup());
+    ObjLoader po = new ObjLoader("assets/arrow2_fix.obj", ObjectFile.RESIZE);
+	  tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
     tg.addChild(po.getTransformGroup());
     tf_ = new Transform3D();
     tf_.setTranslation(new Vector3d(0.0, defaultPoint, -0.6));
@@ -115,7 +110,7 @@ class ViewClock implements ViewInterface {
   private double speed;
 
   private void changeClockwise(){
-    speed *= 2;    
+    speed /= 2;    
   }
 
 /**
