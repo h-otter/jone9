@@ -41,6 +41,7 @@ public class playerObj {
         	e.printStackTrace();
             System.exit(1);
         }
+        trans.addChild(s.getSceneGroup());
 	}
 	
 	public void addBounds(Bounds bounds)
