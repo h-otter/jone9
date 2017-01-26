@@ -13,6 +13,7 @@ class ViewClock implements ViewInterface {
 
   private TransformGroup tg;
   private Transform3D tf;
+  private Transform3D tf_; // local TG for scaling, local position
   public ViewClock(BranchGroup parentGroup, double defaultPoint){
     this.rng = new Random(System.currentTimeMillis());
 
@@ -27,13 +28,17 @@ class ViewClock implements ViewInterface {
     tg = new TransformGroup();
     playerObj po = new playerObj("assets/arrow2_fix.obj", ObjectFile.RESIZE);
 	tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-	tg.addChild(po.getSceneGroup());
+	//tg.addChild(po.getSceneGroup());
+    tg.addChild(po.getTransformGroup());
+    tf_ = new Transform3D();
+    tf_.setTranslation(new Vector3d(0.0, defaultPoint, -0.6));
+    po.getTransformGroup().setTransform(tf_);
     parentGroup.addChild(tg);
 
     rotValue = 0;
     speed = Math.PI * 2 / 30;
     tf = new Transform3D();
-    tf.setTranslation(new Vector3d(defaultPoint, 0.0, 0.0));
+    tf.setTranslation(new Vector3d(0.0, 0.0, 0.0));
     tg.setTransform(tf);
   }
 
