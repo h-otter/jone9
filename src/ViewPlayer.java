@@ -1,3 +1,4 @@
+import com.sun.j3d.loaders.objectfile.ObjectFile;
 import com.sun.j3d.utils.geometry.ColorCube;
 
 import javax.media.j3d.BranchGroup;
@@ -14,22 +15,29 @@ class ViewPlayer implements ViewInterface {
 /**
  * how far from center of clock
  */
-  private static double defaultLength = 1.0;
+  private static double defaultLength = -1.1;
+  private static double defaultScale = 0.2;
+  private static double defaultHeight = 0.25;
 
   TransformGroup tg;
   Transform3D tf;
+  Transform3D tfScale; // local TG for scaling, local position
   public ViewPlayer(TransformGroup parentGroup){
     this.jumpStatus = 0;
     this.distance = 0;
 
-    ColorCube testCube = new ColorCube(0.1f);
     tg = new TransformGroup();
-    tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-    tg.addChild(testCube);
-    parentGroup.addChild(tg);
+    ObjLoader po = new ObjLoader("assets/model.obj", ObjectFile.RESIZE);
+  	tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+    tg.addChild(po.getTransformGroup());
+    tfScale = new Transform3D();
+    tfScale.setTranslation(new Vector3d(0.0, defaultHeight, 0.0));
+    tfScale.setScale(this.defaultScale); // 縮小表示
+    po.getTransformGroup().setTransform(tfScale);
+	  parentGroup.addChild(tg);
 
     tf = new Transform3D();
-    tf.set(new Vector3d(0, 0.0, defaultLength));
+    tf.setTranslation(new Vector3d(0.0, 0.0, defaultLength));
     tg.setTransform(tf);
   }
 
