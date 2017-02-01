@@ -13,27 +13,27 @@ class ViewClock implements ViewInterface {
 
   private TransformGroup tg;
   private Transform3D tf;
+  private Transform3D tf_; // local TG for scaling, local position
   public ViewClock(BranchGroup parentGroup, double defaultPoint){
     this.rng = new Random(System.currentTimeMillis());
+    this.rndRange = rng.nextInt(30) + 40;
 
-    this.maxChangeMilliSec = defaultMaxChangeMilliSec;
     this.minChangeMilliSec = defaultMinChangeMilliSec;
     this.lastChangedMillSec = 0;
 
-    //ColorCube testCube = new ColorCube(0.1f);
-    //tg = new TransformGroup();
-    //tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-    //tg.addChild(testCube);
     tg = new TransformGroup();
-    playerObj po = new playerObj("assets/arrow2_fix.obj", ObjectFile.RESIZE);
-	tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-	tg.addChild(po.getSceneGroup());
+    ObjLoader po = new ObjLoader("assets/arrow2_fix.obj", ObjectFile.RESIZE);
+	  tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+    tg.addChild(po.getTransformGroup());
+    tf_ = new Transform3D();
+    tf_.setTranslation(new Vector3d(0.0, defaultPoint, -0.6));
+    po.getTransformGroup().setTransform(tf_);
     parentGroup.addChild(tg);
 
     rotValue = 0;
-    speed = Math.PI * 2 / 30;
+    speed = Math.PI * 0.5 / 30;
     tf = new Transform3D();
-    tf.setTranslation(new Vector3d(defaultPoint, 0.0, 0.0));
+    tf.setTranslation(new Vector3d(0.0, 0.0, 0.0));
     tg.setTransform(tf);
   }
 
@@ -51,58 +51,54 @@ class ViewClock implements ViewInterface {
     this.clockwise(currentTime);
   }
 
-  private static final int defaultMaxChangeMilliSec = 15000;
-  private int maxChangeMilliSec;
   private static final int defaultMinChangeMilliSec = 3000;
   private int minChangeMilliSec;
   private long lastChangedMillSec;
   private Random rng;
+  private int rndRange;
+
+  private final static int minRnd = 40;
+  private final static int maxRnd = 30;
 
   private double rotValue;
 /**
  * deside whether change speed or not
  *
  * [+] algorithm example
- *  random < max
- *  <--------------->
- * |------|------|--------------|
- * last   min    currentTime    last + max
- * -> in this case, not change clockwise speed
- * -> binomial distribution
+ * currentTime is depend on systemclock to effect for bias
+ * when currentTime % rndRange(minRnd ~ maxRnd) == 0, changeClockwise
  *
  * @param currentTime start proc time
  */
   public void clockwise(long currentTime) {
-    if (this.rng.nextInt(this.maxChangeMilliSec - this.minChangeMilliSec) + this.lastChangedMillSec + this.minChangeMilliSec < currentTime) {
+    if (this.lastChangedMillSec + this.minChangeMilliSec < currentTime && currentTime % rndRange == 0) {
       if (this.debugMode) {
         System.out.println("[+] changed speed of clockwise in " + (currentTime - this.lastChangedMillSec));
       }
       this.lastChangedMillSec = currentTime;
+      this.rndRange = rng.nextInt(maxRnd) + minRnd;
+      
       changeClockwise();
       recalcParams();
     }
 
     rotValue += speed;
+    // rotValue %= Math.PI * 2;
     tf.rotY(rotValue);
     tg.setTransform(tf);
   }
 
-  private final static double maxParam = 0.93;
   private final static double minParam = 0.95;
 
 /**
- * recalc maxChangeMilliSec and minChangeMilliSec
+ * recalc minChangeMilliSec
  * a_n = a_n-1 * params
  */
   private void recalcParams(){
-    this.maxChangeMilliSec = (int)(this.maxChangeMilliSec * (this.maxParam + this.rng.nextDouble() % 0.05));
     this.minChangeMilliSec = (int)(this.minChangeMilliSec * (this.minParam + this.rng.nextDouble() % 0.05));
-    if (this.maxChangeMilliSec < this.minChangeMilliSec + 1000){
-      this.maxChangeMilliSec = this.minChangeMilliSec + 1000;
-    }
 
     if (this.debugMode) {
-      System.out.println("[+] recalced maxChangeMilliSec = " + this.maxChangeMilliSec + ", minChangeMilliSec = " + this.minChangeMilliSec);
+      System.out.println("[+] recalced minChangeMilliSec = " + this.minChangeMilliSec);
     }
   }
 
@@ -110,7 +106,7 @@ class ViewClock implements ViewInterface {
   private double speed;
 
   private void changeClockwise(){
-    speed *= 2;    
+    // speed *= 2;    
   }
 
 /**
