@@ -106,7 +106,7 @@ class ViewClock implements ViewInterface {
   private double speed;
 
   private void changeClockwise(){
-    // speed *= 2;    
+     speed *= 2;    
   }
 
 /**
