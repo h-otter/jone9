@@ -1,5 +1,6 @@
 import java.util.Random;
 
+import com.sun.j3d.loaders.objectfile.ObjectFile;
 import com.sun.j3d.utils.geometry.ColorCube;
 
 import javax.media.j3d.BranchGroup;
@@ -19,16 +20,20 @@ class ViewClock implements ViewInterface {
     this.minChangeMilliSec = defaultMinChangeMilliSec;
     this.lastChangedMillSec = 0;
 
-    ColorCube testCube = new ColorCube(0.1f);
+    //ColorCube testCube = new ColorCube(0.1f);
+    //tg = new TransformGroup();
+    //tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+    //tg.addChild(testCube);
     tg = new TransformGroup();
-    tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-    tg.addChild(testCube);
+    playerObj po = new playerObj("assets/arrow2_fix.obj", ObjectFile.RESIZE);
+	tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+	tg.addChild(po.getSceneGroup());
     parentGroup.addChild(tg);
 
     rotValue = 0;
     speed = Math.PI * 2 / 30;
     tf = new Transform3D();
-    tf.set(new Vector3d(defaultPoint, 0.0, 0.0));
+    tf.setTranslation(new Vector3d(defaultPoint, 0.0, 0.0));
     tg.setTransform(tf);
   }
 

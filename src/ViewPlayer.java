@@ -1,3 +1,4 @@
+import com.sun.j3d.loaders.objectfile.ObjectFile;
 import com.sun.j3d.utils.geometry.ColorCube;
 
 import javax.media.j3d.BranchGroup;
@@ -16,14 +17,18 @@ class ViewPlayer implements ViewInterface {
     this.jumpStatus = 0;
     this.distance = 0;
 
-    ColorCube testCube = new ColorCube(0.1f);
+//    ColorCube testCube = new ColorCube(0.1f);
+//    tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+//    tg.addChild(testCube);
+//    parentGroup.addChild(tg);
     tg = new TransformGroup();
-    tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-    tg.addChild(testCube);
-    parentGroup.addChild(tg);
+    playerObj po = new playerObj("assets/model.obj", ObjectFile.RESIZE);
+	tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+	tg.addChild(po.getSceneGroup());
+	parentGroup.addChild(tg);
 
     tf = new Transform3D();
-    tf.set(new Vector3d(0, 0.0, defaultLength));
+    tf.setTranslation(new Vector3d(0.0, 0.0, defaultLength));
     tg.setTransform(tf);
   }
 
