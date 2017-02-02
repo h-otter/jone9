@@ -102,11 +102,14 @@ class ViewClock implements ViewInterface {
     }
   }
 
-  private static final double speedRange = 1;
+  private static final double speedRange = 2 * Math.PI / 30;
   private double speed;
 
   private void changeClockwise(){
-    // speed *= 2;    
+    speed = rng.nextDouble() % this.speedRange;
+    if (rng.nextInt(2) == 1){
+      speed *= -1;
+    }
   }
 
 /**
