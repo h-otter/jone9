@@ -1,5 +1,6 @@
 import java.util.Random;
 
+import com.sun.j3d.loaders.objectfile.ObjectFile;
 import com.sun.j3d.utils.geometry.ColorCube;
 
 import javax.media.j3d.BranchGroup;
@@ -12,6 +13,7 @@ class ViewClock implements ViewInterface {
 
   private TransformGroup tg;
   private Transform3D tf;
+  private Transform3D tf_; // local TG for scaling, local position
   public ViewClock(BranchGroup parentGroup, double defaultPoint){
     this.rng = new Random(System.currentTimeMillis());
     this.rndRange = rng.nextInt(30) + 40;
@@ -19,16 +21,19 @@ class ViewClock implements ViewInterface {
     this.minChangeMilliSec = defaultMinChangeMilliSec;
     this.lastChangedMillSec = 0;
 
-    ColorCube testCube = new ColorCube(0.1f);
     tg = new TransformGroup();
-    tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-    tg.addChild(testCube);
+    ObjLoader po = new ObjLoader("assets/arrow2_fix.obj", ObjectFile.RESIZE);
+	  tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+    tg.addChild(po.getTransformGroup());
+    tf_ = new Transform3D();
+    tf_.setTranslation(new Vector3d(0.0, defaultPoint, -0.6));
+    po.getTransformGroup().setTransform(tf_);
     parentGroup.addChild(tg);
 
     rotValue = 0;
-    speed = Math.PI * 2 / 30;
+    speed = Math.PI * 0.5 / 30;
     tf = new Transform3D();
-    tf.set(new Vector3d(defaultPoint, 0.0, 0.0));
+    tf.setTranslation(new Vector3d(0.0, 0.0, 0.0));
     tg.setTransform(tf);
   }
 

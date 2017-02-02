@@ -1,20 +1,22 @@
+import java.awt.Color;
+import java.awt.GraphicsConfiguration;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.media.j3d.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.vecmath.*;
 
-import com.sun.j3d.utils.universe.*;
 import com.sun.j3d.utils.geometry.*;
-
-import java.awt.*;
-import javax.swing.*;
+import com.sun.j3d.utils.universe.*;
 
 import java.io.*;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 
 // package Jone9;
+
 
 class ModelJone9 extends JFrame {
   private List<ViewInterface> viewObjs;
@@ -50,17 +52,22 @@ class ModelJone9 extends JFrame {
     universe.getViewingPlatform().setNominalViewingTransform();
     universe.getViewer().getView().setMinimumFrameCycleTime(30);
     bg = new BranchGroup();
+    Bounds bounds = new BoundingSphere(new Point3d(), 100.0); // 光源の影響範囲を球状に設定
+
     BufferedImage image = loadImage("assets/background.jpg");
-    BoundingSphere bounds = new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 10000.0);
     Background background = new Background();
     background.setApplicationBounds(bounds);
     background.setCapability(Background.ALLOW_IMAGE_WRITE);
     background.setImage(new ImageComponent2D(ImageComponent.FORMAT_RGB, image));
     bg.addChild(background);
 
+    Light light = new DirectionalLight(new Color3f(Color.white), new Vector3f(1.0f, -1.0f, -1.0f) );
+    light.setInfluencingBounds(bounds);
+    bg.addChild(light);	// BG に光源を追加
+
     // object init
-    needle = new ViewClock(bg, 0.3f);
-    needleGround = new ViewClock(bg, 0f);
+    needle = new ViewClock(bg, 0.1);
+    needleGround = new ViewClock(bg, 0.0);
     player = new ViewPlayer(needleGround.getTg());
 
     viewObjs = new ArrayList<ViewInterface>();
@@ -87,7 +94,6 @@ class ModelJone9 extends JFrame {
     view_pos.mul(view_dir);
     //カメラの位置情報を登録
     Camera.setTransform(view_pos);
-
     // fps iint
     defaultIdealSleep = (long)((1000 << 16) / fps);
     this.fpsThread = new FPSThread(this);
