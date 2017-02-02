@@ -84,7 +84,7 @@ class ViewPlayer implements ViewInterface {
  */
   private double distance;
   private final static double defaultDistance = 0.03;
-  private final static int jumpMaxFrames = 20;  
+  private final static int jumpMaxFrames = 10;  
 
 /**
  * if key pressed, this method is called
