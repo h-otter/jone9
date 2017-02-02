@@ -17,6 +17,7 @@ class ViewClock implements ViewInterface {
   public ViewClock(BranchGroup parentGroup, double defaultPoint, double defaultSpeed, double defaultRot){
     this.rng = new Random(System.currentTimeMillis());
     this.rndRange = rng.nextInt(30) + 40;
+    this.changeTimes = 0;
 
     this.minChangeMilliSec = defaultMinChangeMilliSec;
     this.lastChangedMillSec = 0;
@@ -103,13 +104,28 @@ class ViewClock implements ViewInterface {
     }
   }
 
-  private static final double speedRange = 2 * Math.PI / 30;
+  private static final double maxSpeed = 2 * Math.PI / 30;
+  private int changeTimes;
   private double speed;
 
+/**
+ * change speed randomly 
+ *
+ * [*] algorithm
+ * 0 <= random speed <= this.maxSpeed / 1.5
+ * 0 <= random speed <= this.maxSpeed / (Math.pow(2, -changeTimes) + 1)
+ * 0 <= random speed <= this.maxSpeed
+ * speed converge to maxSpeed in about 15 times changed
+ */
   private void changeClockwise(){
-    speed = rng.nextDouble() % this.speedRange;
+    speed = rng.nextDouble() % (this.maxSpeed / (Math.pow(2, -changeTimes) + 1));
     if (rng.nextInt(2) == 1){
       speed *= -1;
+    }
+    changeTimes++;
+
+    if (this.debugMode) {
+      System.out.println("[+] speed = " + this.speed);
     }
   }
 
