@@ -56,8 +56,8 @@ class ModelJone9 extends JFrame {
     bg.addChild(light);	// BG に光源を追加
 
     // object init
-    needle = new ViewClock(bg, 0.1);
-    needleGround = new ViewClock(bg, 0.0);
+    needle = new ViewClock(bg, 0.1, Math.PI * 0.5 / 30);
+    needleGround = new ViewClock(bg, 0.0, 0.0);
     player = new ViewPlayer(needleGround.getTg());
 
     viewObjs = new ArrayList<ViewInterface>();

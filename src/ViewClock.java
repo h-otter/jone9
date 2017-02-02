@@ -14,7 +14,7 @@ class ViewClock implements ViewInterface {
   private TransformGroup tg;
   private Transform3D tf;
   private Transform3D tf_; // local TG for scaling, local position
-  public ViewClock(BranchGroup parentGroup, double defaultPoint){
+  public ViewClock(BranchGroup parentGroup, double defaultPoint, double defaultSpeed){
     this.rng = new Random(System.currentTimeMillis());
     this.rndRange = rng.nextInt(30) + 40;
 
@@ -31,7 +31,7 @@ class ViewClock implements ViewInterface {
     parentGroup.addChild(tg);
 
     rotValue = 0;
-    speed = Math.PI * 0.5 / 30;
+    speed = defaultSpeed;
     tf = new Transform3D();
     tf.setTranslation(new Vector3d(0.0, 0.0, 0.0));
     tg.setTransform(tf);
