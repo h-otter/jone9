@@ -83,17 +83,11 @@ class ModelJone9 extends JFrame {
     Transform3D view_pos = new Transform3D();  //カメラの位置ベクトル
     Vector3f pos_vec = new Vector3f(0f, (float)Math.sqrt(3)*3f * 1.1f, (3f + 0.3f) * 1.1f);  //カメラの位置を決める
     view_pos.setTranslation(pos_vec);  //カメラの位置について、座標変換実行
-    //カメラの向きを示すベクトル
     Transform3D view_dir = new Transform3D();
     Transform3D view_dir2 = new Transform3D();
-    //カメラの向きを決める
-    // view_dir.rotY(Math.PI/4);
-    // view_dir2.rotX(-Math.PI/4 + 0.1f);
     view_dir2.rotX(-Math.PI/3);
     view_dir.mul(view_dir2);
-    //カメラの位置およびカメラの向きを統合 
     view_pos.mul(view_dir);
-    //カメラの位置情報を登録
     Camera.setTransform(view_pos);
     // fps iint
     defaultIdealSleep = (long)((1000 << 16) / fps);
