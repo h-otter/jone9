@@ -10,6 +10,10 @@ import com.sun.j3d.utils.geometry.*;
 import java.awt.*;
 import javax.swing.*;
 
+import java.io.*;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+
 // package Jone9;
 
 class ModelJone9 extends JFrame {
@@ -46,6 +50,13 @@ class ModelJone9 extends JFrame {
     universe.getViewingPlatform().setNominalViewingTransform();
     universe.getViewer().getView().setMinimumFrameCycleTime(30);
     bg = new BranchGroup();
+    BufferedImage image = loadImage("assets/background.jpg");
+    BoundingSphere bounds = new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 10000.0);
+    Background background = new Background();
+    background.setApplicationBounds(bounds);
+    background.setCapability(Background.ALLOW_IMAGE_WRITE);
+    background.setImage(new ImageComponent2D(ImageComponent.FORMAT_RGB, image));
+    bg.addChild(background);
 
     // object init
     needle = new ViewClock(bg, 0.3f);
@@ -85,6 +96,27 @@ class ModelJone9 extends JFrame {
     //ウィンドウを可視化
     this.setVisible(true);
     setFocusable(true);
+  }
+
+  private static BufferedImage loadImage(String fileName){
+    InputStream is = null;
+
+    try {
+      is = new FileInputStream(fileName);
+      BufferedImage img = ImageIO.read(is);
+      return img;
+    }
+    catch(IOException evn) {
+      throw new RuntimeException(evn);
+    }
+    finally {
+      if(is != null){
+        try{
+          is.close();
+        }
+        catch(IOException evn){}
+      }
+    }
   }
 
   private boolean debugMode;
