@@ -2,8 +2,6 @@ import com.sun.j3d.loaders.objectfile.ObjectFile;
 
 import javax.media.j3d.Shape3D;
 
-
-
 abstract class ViewInterface {
   protected ViewInterface() {}
 

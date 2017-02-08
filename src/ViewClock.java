@@ -1,13 +1,9 @@
 import java.util.Random;
 
-import com.sun.j3d.utils.geometry.Primitive;
-
-import javax.media.j3d.Appearance;
 import javax.media.j3d.Group;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Shape3D;
 import javax.media.j3d.TransformGroup;
-import javax.media.j3d.TransparencyAttributes;
 import javax.media.j3d.Transform3D;
 import javax.vecmath.*;
 
