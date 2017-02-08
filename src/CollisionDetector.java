@@ -52,24 +52,26 @@ class CollisionDetector extends Behavior {
    * to the OR'ed criterion again.
    */
   public void processStimulus(Enumeration criteria) {
-    WakeupCriterion theCriterion = (WakeupCriterion) criteria.nextElement();
-    if (theCriterion instanceof WakeupOnCollisionEntry) {
-      Node theLeaf = ((WakeupOnCollisionEntry) theCriterion)
-          .getTriggeringPath().getObject();
-      System.out.println("Collided with " + theLeaf.getUserData());
-    } else if (theCriterion instanceof WakeupOnCollisionExit) {
-      Node theLeaf = ((WakeupOnCollisionExit) theCriterion)
-          .getTriggeringPath().getObject();
-      System.out.println("Stopped colliding with  "
-          + theLeaf.getUserData());
-    } else {
-      Node theLeaf = ((WakeupOnCollisionMovement) theCriterion)
-          .getTriggeringPath().getObject();
-      System.out.println("Moved whilst colliding with "
-          + theLeaf.getUserData());
-    }
-    wakeupOn(oredCriteria);  }
-
+	if(criteria.hasMoreElements())
+	{
+	    WakeupCriterion theCriterion = (WakeupCriterion) criteria.nextElement();
+	    if (theCriterion instanceof WakeupOnCollisionEntry) {
+	      Node theLeaf = ((WakeupOnCollisionEntry) theCriterion)
+	          .getTriggeringPath().getObject();
+	      System.out.println("Collided with " + theLeaf.getUserData());
+	    } else if (theCriterion instanceof WakeupOnCollisionExit) {
+	      Node theLeaf = ((WakeupOnCollisionExit) theCriterion)
+	          .getTriggeringPath().getObject();
+	      System.out.println("Stopped colliding with  "
+	          + theLeaf.getUserData());
+	    } else {
+	      Node theLeaf = ((WakeupOnCollisionMovement) theCriterion)
+	          .getTriggeringPath().getObject();
+	      System.out.println("Moved whilst colliding with "
+	          + theLeaf.getUserData());
+	    }
+	    wakeupOn(oredCriteria);  }
+  	}
 //	@Override
 //	public void processStimulus(Enumeration arg0) {
 //		// TODO Auto-generated method stub
