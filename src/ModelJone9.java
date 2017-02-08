@@ -66,8 +66,10 @@ class ModelJone9 extends JFrame {
     viewObjs.add((ViewInterface)player);
 
     // 当たり判定
-    CollisionDetector col = new CollisionDetector(player.collidingShape, bounds);
+    CollisionDetector col = new CollisionDetector(player.getCollisonShape(), bounds);
     bg.addChild(col);
+    
+    needle.setCollisionName("needle");
     
     
     // java3d 2nd init

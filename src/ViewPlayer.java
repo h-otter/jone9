@@ -24,10 +24,10 @@ class ViewPlayer implements ViewInterface {
   private static double defaultScale = 0.2;
   private static double defaultHeight = 0.25;
 
-  TransformGroup tg;
-  Transform3D tf;
-  Transform3D tfScale; // local TG for scaling, local position
-  Shape3D collidingShape;
+  private TransformGroup tg;
+  private Transform3D tf;
+  private Transform3D tfScale; // local TG for scaling, local position
+  private Shape3D collidingShape;
   public ViewPlayer(TransformGroup parentGroup){
     this.jumpStatus = 0;
     this.distance = 0;
@@ -69,6 +69,10 @@ class ViewPlayer implements ViewInterface {
   private boolean debugMode;
   public void setDebugMode(boolean debug){
     this.debugMode = debug;
+  }
+  
+  public Shape3D getCollisonShape() {
+	  return this.collidingShape;
   }
 
 /**

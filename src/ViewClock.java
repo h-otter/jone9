@@ -1,10 +1,15 @@
 import java.util.Random;
 
 import com.sun.j3d.loaders.objectfile.ObjectFile;
+import com.sun.j3d.utils.geometry.Box;
 import com.sun.j3d.utils.geometry.ColorCube;
+import com.sun.j3d.utils.geometry.Primitive;
 
+import javax.media.j3d.Appearance;
 import javax.media.j3d.BranchGroup;
+import javax.media.j3d.Shape3D;
 import javax.media.j3d.TransformGroup;
+import javax.media.j3d.TransparencyAttributes;
 import javax.media.j3d.Transform3D;
 import javax.vecmath.*;
 
@@ -13,23 +18,41 @@ class ViewClock implements ViewInterface {
 
   private TransformGroup tg;
   private Transform3D tf;
-  private Transform3D tf_; // local TG for scaling, local position
+  private Transform3D tfScale; // local TG for scaling, local position
+  private Shape3D collidingShape;
+  private String collisonName = "";
+  
   public ViewClock(BranchGroup parentGroup, double defaultPoint){
     this.rng = new Random(System.currentTimeMillis());
     this.rndRange = rng.nextInt(30) + 40;
 
     this.minChangeMilliSec = defaultMinChangeMilliSec;
     this.lastChangedMillSec = 0;
-
+    
+    // モデルを読み込む
     tg = new TransformGroup();
     ObjLoader po = new ObjLoader("assets/arrow2_fix.obj", ObjectFile.RESIZE);
 	  tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
     tg.addChild(po.getTransformGroup());
-    tf_ = new Transform3D();
-    tf_.setTranslation(new Vector3d(0.0, defaultPoint, -0.6));
-    po.getTransformGroup().setTransform(tf_);
+    tfScale = new Transform3D();
+    tfScale.setTranslation(new Vector3d(0.0, defaultPoint, -0.6));
+    po.getTransformGroup().setTransform(tfScale);
     parentGroup.addChild(tg);
 
+	// 当たり判定用のBOXを透明な材質で配置
+	// Primitive box = new Box((float)defaultScale,(float)defaultScale,(float)defaultScale,null);
+	Primitive box = new Box();
+	Appearance transAp = new Appearance(); // 材質設定
+	transAp.setCapability(Appearance.ALLOW_MATERIAL_WRITE );
+	TransparencyAttributes ta = new TransparencyAttributes(); // 透明用の特別設定
+	ta.setTransparencyMode(TransparencyAttributes.BLENDED);
+	ta.setTransparency(0.5f); // 1.0f -> まっ透明
+	transAp.setTransparencyAttributes(ta);
+	box.setAppearance(transAp);
+
+	collidingShape = box.getShape(0);
+	po.getTransformGroup().addChild(box);
+    
     rotValue = 0;
     speed = Math.PI * 0.5 / 30;
     tf = new Transform3D();
@@ -44,6 +67,15 @@ class ViewClock implements ViewInterface {
 
   public TransformGroup getTg(){
     return tg;
+  }
+  
+  public void setCollisionName(String name) {
+	  this.collisonName = name;
+	  collidingShape.setName(name);
+  }
+  
+  public void setCollisionDisable() {
+	  this.collidingShape = null;
   }
 
   @Override

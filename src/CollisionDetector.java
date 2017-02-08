@@ -58,17 +58,17 @@ class CollisionDetector extends Behavior {
 	    if (theCriterion instanceof WakeupOnCollisionEntry) {
 	      Node theLeaf = ((WakeupOnCollisionEntry) theCriterion)
 	          .getTriggeringPath().getObject();
-	      System.out.println("Collided with " + theLeaf.getUserData());
+	      System.out.println("Collided with " + theLeaf.getName());
 	    } else if (theCriterion instanceof WakeupOnCollisionExit) {
 	      Node theLeaf = ((WakeupOnCollisionExit) theCriterion)
 	          .getTriggeringPath().getObject();
 	      System.out.println("Stopped colliding with  "
-	          + theLeaf.getUserData());
+	          + theLeaf.getName());
 	    } else {
 	      Node theLeaf = ((WakeupOnCollisionMovement) theCriterion)
 	          .getTriggeringPath().getObject();
 	      System.out.println("Moved whilst colliding with "
-	          + theLeaf.getUserData());
+	          + theLeaf.getName());
 	    }
 	    wakeupOn(oredCriteria);  }
   	}
