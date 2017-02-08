@@ -37,30 +37,30 @@ class ViewPlayer implements ViewInterface {
     ObjLoader po = new ObjLoader("assets/model.obj", ObjectFile.RESIZE);
   	tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
     tg.addChild(po.getTransformGroup());
-    
-	// 当たり判定用のBOXを透明な材質で配置
-	// Primitive box = new Box((float)defaultScale,(float)defaultScale,(float)defaultScale,null);
-	Primitive box = new Box();
-	Appearance transAp = new Appearance(); // 材質設定
-	transAp.setCapability(Appearance.ALLOW_MATERIAL_WRITE );
-	TransparencyAttributes ta = new TransparencyAttributes(); // 透明用の特別設定
-	ta.setTransparencyMode(TransparencyAttributes.BLENDED);
-	ta.setTransparency(0.1f); // 1.0f -> まっ透明
-	transAp.setTransparencyAttributes(ta);
-	box.setAppearance(transAp);
+      
+    // 当たり判定用のBOXを透明な材質で配置
+    // Primitive box = new Box((float)defaultScale,(float)defaultScale,(float)defaultScale,null);
+    Primitive box = new Box();
+    Appearance transAp = new Appearance(); // 材質設定
+    transAp.setCapability(Appearance.ALLOW_MATERIAL_WRITE );
+    TransparencyAttributes ta = new TransparencyAttributes(); // 透明用の特別設定
+    ta.setTransparencyMode(TransparencyAttributes.BLENDED);
+    ta.setTransparency(0.1f); // 1.0f -> まっ透明
+    transAp.setTransparencyAttributes(ta);
+    box.setAppearance(transAp);
 
-	collidingShape = box.getShape(0);
-	po.getTransformGroup().addChild(box);
-    
-	// 初期座標・サイズ用のローカルTGの設定
+    collidingShape = box.getShape(0);
+    po.getTransformGroup().addChild(box);
+      
+    // 初期座標・サイズ用のローカルTGの設定
     tfScale = new Transform3D();
     tfScale.setTranslation(new Vector3d(0.0, defaultHeight, 0.0));
     tfScale.setScale(this.defaultScale); // 縮小表示
     po.getTransformGroup().setTransform(tfScale);
     
-	parentGroup.addChild(tg);
+    parentGroup.addChild(tg);
 	  
-	// ジャンプさせる外側のTGの設定
+    // ジャンプさせる外側のTGの設定
     tf = new Transform3D();
     tf.setTranslation(new Vector3d(0.0, 0.0, defaultLength));
     tg.setTransform(tf);
@@ -79,7 +79,7 @@ class ViewPlayer implements ViewInterface {
  * fall with this formula when jumped
  * y = graphA * (jumpStatus - jumpStatusError) ^ 2 + graphB
  */
-  private final static double graphA = -0.7 / 1000;
+  private final static double graphA = -0.9 / 1000;
   private double graphB;
   private double jumpStatusError;  
 
@@ -112,8 +112,8 @@ class ViewPlayer implements ViewInterface {
  * player jump distance per frame
  */
   private double distance;
-  private final static double defaultDistance = 0.03;
-  private final static int jumpMaxFrames = 20;  
+  private final static double defaultDistance = 0.045;
+  private final static int jumpMaxFrames = 7;  
 
 /**
  * if key pressed, this method is called

@@ -21,14 +21,15 @@ class ViewClock implements ViewInterface {
   private Transform3D tfScale; // local TG for scaling, local position
   private Shape3D collidingShape;
   private String collisonName = "";
-  
-  public ViewClock(BranchGroup parentGroup, double defaultPoint){
+
+  public ViewClock(BranchGroup parentGroup, double defaultPoint, double defaultSpeed, double defaultRot){
     this.rng = new Random(System.currentTimeMillis());
     this.rndRange = rng.nextInt(30) + 40;
+    this.changeTimes = 0;
 
     this.minChangeMilliSec = defaultMinChangeMilliSec;
     this.lastChangedMillSec = 0;
-    
+
     // モデルを読み込む
     tg = new TransformGroup();
     ObjLoader po = new ObjLoader("assets/arrow2_fix.obj", ObjectFile.RESIZE);
@@ -39,23 +40,25 @@ class ViewClock implements ViewInterface {
     po.getTransformGroup().setTransform(tfScale);
     parentGroup.addChild(tg);
 
-	// 当たり判定用のBOXを透明な材質で配置
-	// Primitive box = new Box((float)defaultScale,(float)defaultScale,(float)defaultScale,null);
-	Primitive box = new Box();
-	Appearance transAp = new Appearance(); // 材質設定
-	transAp.setCapability(Appearance.ALLOW_MATERIAL_WRITE );
-	TransparencyAttributes ta = new TransparencyAttributes(); // 透明用の特別設定
-	ta.setTransparencyMode(TransparencyAttributes.BLENDED);
-	ta.setTransparency(0.5f); // 1.0f -> まっ透明
-	transAp.setTransparencyAttributes(ta);
-	box.setAppearance(transAp);
+    // 当たり判定用のBOXを透明な材質で配置
+    // Primitive box = new Box((float)defaultScale,(float)defaultScale,(float)defaultScale,null);
+    Primitive box = new Box();
+    Appearance transAp = new Appearance(); // 材質設定
+    transAp.setCapability(Appearance.ALLOW_MATERIAL_WRITE );
+    TransparencyAttributes ta = new TransparencyAttributes(); // 透明用の特別設定
+    ta.setTransparencyMode(TransparencyAttributes.BLENDED);
+    ta.setTransparency(0.5f); // 1.0f -> まっ透明
+    transAp.setTransparencyAttributes(ta);
+    box.setAppearance(transAp);
 
-	collidingShape = box.getShape(0);
-	po.getTransformGroup().addChild(box);
-    
-    rotValue = 0;
-    speed = Math.PI * 0.5 / 30;
+    collidingShape = box.getShape(0);
+    po.getTransformGroup().addChild(box);
+
     tf = new Transform3D();
+    this.speed = defaultSpeed;
+    this.rotValue = defaultRot;
+    tf.rotY(rotValue);
+    tg.setTransform(tf);
     tf.setTranslation(new Vector3d(0.0, 0.0, 0.0));
     tg.setTransform(tf);
   }
@@ -68,12 +71,12 @@ class ViewClock implements ViewInterface {
   public TransformGroup getTg(){
     return tg;
   }
-  
+
   public void setCollisionName(String name) {
 	  this.collisonName = name;
 	  collidingShape.setName(name);
   }
-  
+
   public void setCollisionDisable() {
 	  this.collidingShape = null;
   }
@@ -109,13 +112,12 @@ class ViewClock implements ViewInterface {
       }
       this.lastChangedMillSec = currentTime;
       this.rndRange = rng.nextInt(maxRnd) + minRnd;
-      
+
       changeClockwise();
       recalcParams();
     }
 
     rotValue += speed;
-    // rotValue %= Math.PI * 2;
     tf.rotY(rotValue);
     tg.setTransform(tf);
   }
@@ -134,11 +136,29 @@ class ViewClock implements ViewInterface {
     }
   }
 
-  private static final double speedRange = 1;
+  private static final double maxSpeed = 2 * Math.PI / 30;
+  private int changeTimes;
   private double speed;
 
+/**
+ * change speed randomly
+ *
+ * [*] algorithm
+ * 0 <= random speed <= this.maxSpeed / 1.5
+ * 0 <= random speed <= this.maxSpeed / (Math.pow(2, -changeTimes) + 1)
+ * 0 <= random speed <= this.maxSpeed
+ * speed converge to maxSpeed in about 15 times changed
+ */
   private void changeClockwise(){
-     speed *= 2;    
+    speed = rng.nextDouble() % (this.maxSpeed / (Math.pow(2, -changeTimes) + 1));
+    if (rng.nextInt(2) == 1){
+      speed *= -1;
+    }
+    changeTimes++;
+
+    if (this.debugMode) {
+      System.out.println("[+] speed = " + this.speed);
+    }
   }
 
 /**
