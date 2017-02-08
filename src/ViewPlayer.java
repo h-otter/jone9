@@ -50,7 +50,7 @@ class ViewPlayer implements ViewInterface {
  * fall with this formula when jumped
  * y = graphA * (jumpStatus - jumpStatusError) ^ 2 + graphB
  */
-  private final static double graphA = -0.7 / 1000;
+  private final static double graphA = -0.9 / 1000;
   private double graphB;
   private double jumpStatusError;  
 
@@ -83,8 +83,8 @@ class ViewPlayer implements ViewInterface {
  * player jump distance per frame
  */
   private double distance;
-  private final static double defaultDistance = 0.03;
-  private final static int jumpMaxFrames = 10;  
+  private final static double defaultDistance = 0.045;
+  private final static int jumpMaxFrames = 7;  
 
 /**
  * if key pressed, this method is called
