@@ -1,8 +1,9 @@
-import com.sun.j3d.loaders.objectfile.ObjectFile;
+import com.sun.j3d.loaders.Scene;
 import com.sun.j3d.utils.geometry.ColorCube;
 import com.sun.j3d.utils.geometry.Primitive;
 
 import javax.media.j3d.Appearance;
+import javax.media.j3d.Group;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Shape3D;
 import javax.media.j3d.TransformGroup;
@@ -10,8 +11,9 @@ import javax.media.j3d.TransparencyAttributes;
 import javax.media.j3d.Transform3D;
 import com.sun.j3d.utils.geometry.Box;
 import javax.vecmath.*;
+import java.util.Hashtable;
 
-class ViewPlayer implements ViewInterface {
+class ViewPlayer extends ViewInterface {
 /**
  * disabled default constructor
  */
@@ -27,37 +29,19 @@ class ViewPlayer implements ViewInterface {
   private TransformGroup tg;
   private Transform3D tf;
   private Transform3D tfScale; // local TG for scaling, local position
-  private Shape3D collidingShape;
-  public ViewPlayer(TransformGroup parentGroup){
+  public ViewPlayer(Group parentGroup){
+    super("assets/model.obj", "player");
+
     this.jumpStatus = 0;
     this.distance = 0;
     
-    // モデルを読み込む
     tg = new TransformGroup();
-    ObjLoader po = new ObjLoader("assets/model.obj", ObjectFile.RESIZE);
   	tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
     tg.addChild(po.getTransformGroup());
-      
-    // 当たり判定用のBOXを透明な材質で配置
-    // Primitive box = new Box((float)defaultScale,(float)defaultScale,(float)defaultScale,null);
-    Primitive box = new Box();
-    Appearance transAp = new Appearance(); // 材質設定
-    transAp.setCapability(Appearance.ALLOW_MATERIAL_WRITE );
-    TransparencyAttributes ta = new TransparencyAttributes(); // 透明用の特別設定
-    ta.setTransparencyMode(TransparencyAttributes.BLENDED);
-    ta.setTransparency(0.1f); // 1.0f -> まっ透明
-    transAp.setTransparencyAttributes(ta);
-    box.setAppearance(transAp);
-
-    collidingShape = box.getShape(0);
-    po.getTransformGroup().addChild(box);
-      
-    // 初期座標・サイズ用のローカルTGの設定
     tfScale = new Transform3D();
     tfScale.setTranslation(new Vector3d(0.0, defaultHeight, 0.0));
     tfScale.setScale(this.defaultScale); // 縮小表示
     po.getTransformGroup().setTransform(tfScale);
-    
     parentGroup.addChild(tg);
 	  
     // ジャンプさせる外側のTGの設定
@@ -65,16 +49,7 @@ class ViewPlayer implements ViewInterface {
     tf.setTranslation(new Vector3d(0.0, 0.0, defaultLength));
     tg.setTransform(tf);
   }
-
-  private boolean debugMode;
-  public void setDebugMode(boolean debug){
-    this.debugMode = debug;
-  }
   
-  public Shape3D getCollisonShape() {
-	  return this.collidingShape;
-  }
-
 /**
  * fall with this formula when jumped
  * y = graphA * (jumpStatus - jumpStatusError) ^ 2 + graphB
