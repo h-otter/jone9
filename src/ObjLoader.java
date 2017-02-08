@@ -51,6 +51,10 @@ public class ObjLoader {
 	public Node getSceneGroup() {
 		return s.getSceneGroup();
 	}
+
+	public Scene getScene() {
+		return s;
+	}
 	
 	public TransformGroup getTransformGroup() {
 		return trans;
