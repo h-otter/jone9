@@ -1,15 +1,14 @@
-// https://www.java-tips.org/other-api-tips-100035/119-java3d/2242-collision-detection-with-java3d.html
 /**
  * A simple collision detector class. This responds to a collision event by
  * printing a message with information about the type of collision event and the
  * object that has been collided with.
  * 
+ * https://www.java-tips.org/other-api-tips-100035/119-java3d/2242-collision-detection-with-java3d.html
  * @author I.J.Palmer
  * @version 1.0
  */
 
 import java.util.Enumeration;
-
 import javax.media.j3d.*; 
 
 class CollisionDetector extends Behavior {
@@ -52,8 +51,7 @@ class CollisionDetector extends Behavior {
    * to the OR'ed criterion again.
    */
   public void processStimulus(Enumeration criteria) {
-	if(criteria.hasMoreElements())
-	{
+    if(criteria.hasMoreElements()) {
 	    WakeupCriterion theCriterion = (WakeupCriterion) criteria.nextElement();
 	    if (theCriterion instanceof WakeupOnCollisionEntry) {
 	      Node theLeaf = ((WakeupOnCollisionEntry) theCriterion)
@@ -70,8 +68,9 @@ class CollisionDetector extends Behavior {
 	      System.out.println("Moved whilst colliding with "
 	          + theLeaf.getName());
 	    }
-	    wakeupOn(oredCriteria);  }
-  	}
+	    wakeupOn(oredCriteria);  
+    }
+  }
 //	@Override
 //	public void processStimulus(Enumeration arg0) {
 //		// TODO Auto-generated method stub
