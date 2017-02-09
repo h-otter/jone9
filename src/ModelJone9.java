@@ -136,7 +136,7 @@ class ModelJone9 extends JFrame {
       this.viewObjs.get(i).running(currentTime);
     }
 
-    if (!this.jumping && Math.abs(this.needle.getRotValue() - this.needleGround.getRotValue()) < Math.PI / 12){
+    if (Math.abs(this.player.getJumpStatus()) < 3 && Math.abs(this.needle.getRotValue() - this.needleGround.getRotValue()) < Math.PI / 12){
       finish();
     }
 
@@ -233,11 +233,11 @@ class ModelJone9 extends JFrame {
       this.viewObjs.get(i).finish();
     }
 
-    try {
-      Thread.sleep(2000);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
+    // try {
+    //   Thread.sleep(2000);
+    // } catch (InterruptedException e) {
+    //   e.printStackTrace();
+    // }
 
     JLabel label = new JLabel("<html><h1>finished<h1><h2>result: " + this.finishTime / 1000 + " secs</h2></html>");
     JOptionPane.showMessageDialog(this, label);

@@ -47,29 +47,15 @@ class ViewPlayer extends ViewInterface {
     parentGroup.addChild(tg_);
     tg_.addChild(tg);
 	  
-    // Appearance transAp = new Appearance(); // 材質設定
-    // transAp.setCapability(Appearance.ALLOW_MATERIAL_WRITE);
-    // TransparencyAttributes ta = new TransparencyAttributes(); // 透明用の特別設定
-    // ta.setTransparencyMode(TransparencyAttributes.BLENDED);
-    // ta.setTransparency(0.5f); // 1.0f -> まっ透明
-    // transAp.setTransparencyAttributes(ta);
-    // // Primitive box = new Box(0.5f, 1f, 0.5f, transAp);
-    // Primitive box = new Box();
-    // box.setAppearance(transAp);
-
-    // this.collidingShape = box.getShape(0);
-    // po.getTransformGroup().addChild(box);
-
     // ジャンプさせる外側のTGの設定
     tf = new Transform3D();
     tf.setTranslation(new Vector3d(0.0, 0.0, defaultLength));
     tg.setTransform(tf);
   }
   
-  // private Shape3D collidingShape;
-  // public Shape3D getShape(){
-  //   return this.collidingShape;
-  // }
+  public double getJumpStatus(){
+    return this.jumpStatus;
+  }
 
 /**
  * fall with this formula when jumped
@@ -103,7 +89,7 @@ class ViewPlayer extends ViewInterface {
     else if (this.jumpStatus > 0){
       this.jumpStatus--;
       this.distance = this.graphA * Math.pow(this.jumpStatus - this.jumpStatusError, 2) + this.graphB;
-      if (this.distance < 0){
+      if (this.distance < 0 || jumpStatus == 0){
         this.distance = 0;
       }
       this.tf.set(new Vector3d(0.0, distance, defaultLength));
