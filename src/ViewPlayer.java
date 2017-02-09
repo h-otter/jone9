@@ -147,7 +147,9 @@ class ViewPlayer extends ViewInterface {
   public int jumped(){
     if (this.jumpStatus < 0){
       this.changeJumpStatus();
-      System.out.println("[*] graphA = " + this.graphA + ", graphB = " + this.graphB);
+      if (debugMode){
+        System.out.println("[*] graphA = " + this.graphA + ", graphB = " + this.graphB);
+      }        
     }
 
     return jumpStatus;

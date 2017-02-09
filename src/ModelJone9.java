@@ -78,10 +78,10 @@ class ModelJone9 extends JFrame {
     viewObjs.add((ViewInterface)needleGround);
     viewObjs.add((ViewInterface)player);
 
-    // 当たり判定
-    CollisionDetector col = new CollisionDetector(player.getShape(), bounds, this, needle.getShape());
-    needle.setShapeName("needle");
-    bg.addChild(col);
+    // // 当たり判定
+    // CollisionDetector col = new CollisionDetector(player.getShape(), bounds, this, needle.getShape());
+    // needle.setShapeName("needle");
+    // bg.addChild(col);
     
     // java3d 2nd init
     universe.addBranchGraph(bg);
@@ -162,12 +162,18 @@ class ModelJone9 extends JFrame {
       this.viewObjs.get(i).running(currentTime);
     }
 
-    if (Math.abs(this.player.getJumpStatus()) < 3 && Math.abs(this.needle.getRotValue() - this.needleGround.getRotValue()) < Math.PI / 12){
-      finish();
-    }
 
     if (this.jumping){
       this.player.jump();
+    }
+
+    if (debugMode){
+        System.out.println(Math.abs(this.player.getJumpStatus()) + " rot: " + Math.abs(this.needle.getRotValue() - this.needleGround.getRotValue()) / Math.PI % 1);
+    }
+    
+    // else if (Math.abs(this.needle.getRotValue() - this.needleGround.getRotValue()) < Math.PI / 12){
+    if (Math.abs(this.player.getJumpStatus()) < 3 && Math.abs(this.needle.getRotValue() - this.needleGround.getRotValue()) % (2 * Math.PI) < Math.PI / 12){
+      finish();
     }
   }
 

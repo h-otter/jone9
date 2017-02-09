@@ -38,17 +38,6 @@ class ViewClock extends ViewInterface {
     po.getTransformGroup().setTransform(tfScale);
     parentGroup.addChild(tg);
 
-    // Appearance transAp = new Appearance(); // 材質設定
-    // transAp.setCapability(Appearance.ALLOW_MATERIAL_WRITE );
-    // TransparencyAttributes ta = new TransparencyAttributes(); // 透明用の特別設定
-    // ta.setTransparencyMode(TransparencyAttributes.BLENDED);
-    // ta.setTransparency(0.5f); // 1.0f -> まっ透明
-    // transAp.setTransparencyAttributes(ta);
-    // Primitive box = new Box(0.15f, 0.05f, 1.0f, transAp);
-
-    // collidingShape = box.getShape(0);
-    // po.getTransformGroup().addChild(box);
-
     tf = new Transform3D();
     this.speed = defaultSpeed;
     this.rotValue = defaultRot;
@@ -115,6 +104,7 @@ class ViewClock extends ViewInterface {
     }
 
     rotValue += speed;
+    // rotValue %= 2 * Math.PI;
     tf.rotY(rotValue);
     tg.setTransform(tf);
   }
