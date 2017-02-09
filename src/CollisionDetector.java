@@ -64,7 +64,7 @@ class CollisionDetector extends Behavior {
 	          .getTriggeringPath().getObject();
         if (theLeaf == detectObj){
           System.out.println("Collided with " + theLeaf.getName());
-          parent.finish();
+          // parent.finish();
         }
 	    } else if (theCriterion instanceof WakeupOnCollisionExit) {
 	      // Node theLeaf = ((WakeupOnCollisionExit) theCriterion)

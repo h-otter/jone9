@@ -135,6 +135,11 @@ class ModelJone9 extends JFrame {
     for (int i = 0; i < this.viewObjs.size(); ++i){
       this.viewObjs.get(i).running(currentTime);
     }
+
+    if (!this.jumping && Math.abs(this.needle.getRotValue() - this.needleGround.getRotValue()) < Math.PI / 12){
+      finish();
+    }
+
     if (this.jumping){
       this.player.jump();
     }

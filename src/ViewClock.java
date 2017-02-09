@@ -58,6 +58,10 @@ class ViewClock extends ViewInterface {
     tg.setTransform(tf);
   }
 
+  public double getRotValue(){
+    return this.rotValue;
+  }
+
   // public void setShapeName(String name){
   //   this.collidingShape.setName(name);
   // }
