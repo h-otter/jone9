@@ -1,10 +1,13 @@
 import java.awt.Color;
 import java.awt.GraphicsConfiguration;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.media.j3d.*;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.vecmath.*;
 
@@ -21,8 +24,8 @@ class ModelJone9 extends JFrame {
   private ViewPlayer player;
   private CtlPlayer ctlPlayer;
 
-  SimpleUniverse universe;
-  BranchGroup bg;
+  private SimpleUniverse universe;
+  private BranchGroup bg;
 
   public ModelJone9(){
     this.debugMode = false;
@@ -96,6 +99,8 @@ class ModelJone9 extends JFrame {
     //ウィンドウを可視化
     this.setVisible(true);
     setFocusable(true);
+
+    this.startTime = System.currentTimeMillis();
   }
 
   private boolean debugMode;
@@ -214,10 +219,23 @@ class ModelJone9 extends JFrame {
     player.jumped();
   }
 
+  private long startTime;
+  private long finishTime;
   public void finish(){
+    this.finishTime = System.currentTimeMillis() - startTime;
     for (int i = 0; i < this.viewObjs.size(); ++i){
       this.viewObjs.get(i).finish();
     }
+
+    try {
+      Thread.sleep(2000);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+    
+    JLabel label = new JLabel("<html><h1>finished<h1><h2>result: " + this.finishTime / 1000 + " secs</h2></html>");
+    JOptionPane.showMessageDialog(this, label);
+    System.exit(0);
   }
 
   public static void main(String argv[]){
