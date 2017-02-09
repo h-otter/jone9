@@ -7,6 +7,11 @@ import javax.media.j3d.TransformGroup;
 import javax.media.j3d.Transform3D;
 import javax.vecmath.*;
 
+import com.sun.j3d.utils.geometry.Box;
+import com.sun.j3d.utils.geometry.Primitive;
+import javax.media.j3d.Appearance;
+import javax.media.j3d.TransparencyAttributes;
+
 class ViewClock extends ViewInterface {
   private ViewClock(){}
 
@@ -14,10 +19,9 @@ class ViewClock extends ViewInterface {
   private Transform3D tf;
   private Transform3D tfScale; // local TG for scaling, local position
   private Shape3D collidingShape;
-  private String collisonName = "";
 
-  public ViewClock(Group parentGroup, double defaultPoint, double defaultSpeed, double defaultRot){
-    super("assets/arrow2_fix.obj", "needle");
+  public ViewClock(Group parentGroup, double defaultPoint, double defaultSpeed, double defaultRot, String filename, String name){
+    super(filename, name);
 
     this.rng = new Random(System.currentTimeMillis());
     this.rndRange = rng.nextInt(30) + 40;
@@ -34,6 +38,17 @@ class ViewClock extends ViewInterface {
     po.getTransformGroup().setTransform(tfScale);
     parentGroup.addChild(tg);
 
+    // Appearance transAp = new Appearance(); // 材質設定
+    // transAp.setCapability(Appearance.ALLOW_MATERIAL_WRITE );
+    // TransparencyAttributes ta = new TransparencyAttributes(); // 透明用の特別設定
+    // ta.setTransparencyMode(TransparencyAttributes.BLENDED);
+    // ta.setTransparency(0.5f); // 1.0f -> まっ透明
+    // transAp.setTransparencyAttributes(ta);
+    // Primitive box = new Box(0.15f, 0.05f, 1.0f, transAp);
+
+    // collidingShape = box.getShape(0);
+    // po.getTransformGroup().addChild(box);
+
     tf = new Transform3D();
     this.speed = defaultSpeed;
     this.rotValue = defaultRot;
@@ -43,9 +58,17 @@ class ViewClock extends ViewInterface {
     tg.setTransform(tf);
   }
 
+  // public void setShapeName(String name){
+  //   this.collidingShape.setName(name);
+  // }
+
   public TransformGroup getTg(){
     return tg;
   }
+
+  // public Shape3D getShape(){
+  //   return this.collidingShape;
+  // }
 
   @Override
   public void running(long currentTime){
@@ -75,7 +98,7 @@ class ViewClock extends ViewInterface {
     if (this.finished){
       return;
     }
-    
+
     if (this.lastChangedMillSec + this.minChangeMilliSec < currentTime && currentTime % rndRange == 0) {
       if (this.debugMode) {
         System.out.println("[+] changed speed of clockwise in " + (currentTime - this.lastChangedMillSec));

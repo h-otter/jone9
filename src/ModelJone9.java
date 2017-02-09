@@ -59,8 +59,8 @@ class ModelJone9 extends JFrame {
     bg.addChild(light);	// BG に光源を追加
 
     // object init
-    needle = new ViewClock(bg, 0.1, Math.PI * 0.5 / 30, 0);
-    needleGround = new ViewClock(bg, 0.0, 0.0, Math.PI / 2);
+    needle = new ViewClock(bg, 0.1, Math.PI * 0.5 / 30, 0, "assets/arrow2_fix.obj", "needle");
+    needleGround = new ViewClock(bg, 0.0, 0.0, Math.PI ,"assets/needle_ground.obj", "needleGround");
     player = new ViewPlayer(needleGround.getTg());
 
     viewObjs = new ArrayList<ViewInterface>();
@@ -69,7 +69,8 @@ class ModelJone9 extends JFrame {
     viewObjs.add((ViewInterface)player);
 
     // 当たり判定
-    CollisionDetector col = new CollisionDetector(player.getShape(), bounds, this);
+    CollisionDetector col = new CollisionDetector(player.getShape(), bounds, this, needle.getShape());
+    needle.setShapeName("needle");
     bg.addChild(col);
     
     // java3d 2nd init
@@ -232,7 +233,7 @@ class ModelJone9 extends JFrame {
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
-    
+
     JLabel label = new JLabel("<html><h1>finished<h1><h2>result: " + this.finishTime / 1000 + " secs</h2></html>");
     JOptionPane.showMessageDialog(this, label);
     System.exit(0);

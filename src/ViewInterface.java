@@ -7,6 +7,8 @@ abstract class ViewInterface {
 
   protected ObjLoader po;
   public ViewInterface(String filename, String objectName){
+    System.out.println(filename + objectName);
+
     po = new ObjLoader(filename, ObjectFile.RESIZE);
     this.collidingShape = (Shape3D)(po.getScene().getNamedObjects().get(objectName));
   }
@@ -24,6 +26,10 @@ abstract class ViewInterface {
 
   public Shape3D getShape(){
     return this.collidingShape;
+  }
+
+  public void setShapeName(String name){
+    this.collidingShape.setName(name);
   }
 
 /**

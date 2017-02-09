@@ -10,6 +10,7 @@
 
 import java.util.Enumeration;
 import javax.media.j3d.*; 
+import javax.media.j3d.Shape3D;
 
 class CollisionDetector extends Behavior {
   /** The separate criteria used to wake up this beahvior. */
@@ -22,6 +23,7 @@ class CollisionDetector extends Behavior {
   protected Shape3D collidingShape;
  
   private ModelJone9 parent;
+  private Shape3D detectObj;
 
   /**
    * @param theShape
@@ -29,10 +31,11 @@ class CollisionDetector extends Behavior {
    * @param theBounds
    *            Bounds that define the active region for this behaviour
    */
-  public CollisionDetector(Shape3D theShape, Bounds theBounds, ModelJone9 parent) {
+  public CollisionDetector(Shape3D theShape, Bounds theBounds, ModelJone9 parent, Shape3D detectObj) {
     this.collidingShape = theShape;
     setSchedulingBounds(theBounds);
     this.parent = parent;
+    this.detectObj = detectObj;
   }
  
   /**
@@ -59,18 +62,20 @@ class CollisionDetector extends Behavior {
 	    if (theCriterion instanceof WakeupOnCollisionEntry) {
 	      Node theLeaf = ((WakeupOnCollisionEntry) theCriterion)
 	          .getTriggeringPath().getObject();
-	      System.out.println("Collided with " + theLeaf.getName());
+        if (theLeaf == detectObj){
+          System.out.println("Collided with " + theLeaf.getName());
+          parent.finish();
+        }
 	    } else if (theCriterion instanceof WakeupOnCollisionExit) {
-	      Node theLeaf = ((WakeupOnCollisionExit) theCriterion)
-	          .getTriggeringPath().getObject();
-	      System.out.println("Stopped colliding with  "
-	          + theLeaf.getName());
+	      // Node theLeaf = ((WakeupOnCollisionExit) theCriterion)
+	      //     .getTriggeringPath().getObject();
+	      // System.out.println("Stopped colliding with  "
+	      //     + theLeaf.getName());
 	    } else {
 	      // Node theLeaf = ((WakeupOnCollisionMovement) theCriterion)
 	      //     .getTriggeringPath().getObject();
 	      // System.out.println("Moved whilst colliding with "
 	      //     + theLeaf.getName());
-        parent.finish();
 	    }
 	    wakeupOn(oredCriteria);  
     }
