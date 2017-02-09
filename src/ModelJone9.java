@@ -14,6 +14,10 @@ import javax.vecmath.*;
 import com.sun.j3d.utils.geometry.*;
 import com.sun.j3d.utils.universe.*;
 
+import java.io.*;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+
 // package Jone9;
 
 
@@ -51,9 +55,15 @@ class ModelJone9 extends JFrame {
     universe.getViewingPlatform().setNominalViewingTransform();
     universe.getViewer().getView().setMinimumFrameCycleTime(30);
     bg = new BranchGroup();
-        
-    // 光源の生成
     Bounds bounds = new BoundingSphere(new Point3d(), 100.0); // 光源の影響範囲を球状に設定
+
+    BufferedImage image = loadImage("assets/background.jpg");
+    Background background = new Background();
+    background.setApplicationBounds(bounds);
+    background.setCapability(Background.ALLOW_IMAGE_WRITE);
+    background.setImage(new ImageComponent2D(ImageComponent.FORMAT_RGB, image));
+    bg.addChild(background);
+
     Light light = new DirectionalLight(new Color3f(Color.white), new Vector3f(1.0f, -1.0f, -1.0f) );
     light.setInfluencingBounds(bounds);
     bg.addChild(light);	// BG に光源を追加
@@ -79,18 +89,13 @@ class ModelJone9 extends JFrame {
     ViewingPlatform vp = universe.getViewingPlatform();  //視点についてのハードウェア情報を取得
     TransformGroup Camera = vp.getViewPlatformTransform();  //視点のための座標変換クラスを用意
     Transform3D view_pos = new Transform3D();  //カメラの位置ベクトル
-    Vector3f pos_vec = new Vector3f(5f, 5f, 5f);  //カメラの位置を決める
+    Vector3f pos_vec = new Vector3f(0f, (float)Math.sqrt(3)*3f * 1.1f, (3f + 0.3f) * 1.1f);  //カメラの位置を決める
     view_pos.setTranslation(pos_vec);  //カメラの位置について、座標変換実行
-    //カメラの向きを示すベクトル
     Transform3D view_dir = new Transform3D();
     Transform3D view_dir2 = new Transform3D();
-    //カメラの向きを決める
-    view_dir.rotY(Math.PI/4);
-    view_dir2.rotX(-Math.PI/4 + 0.1f);
+    view_dir2.rotX(-Math.PI/3);
     view_dir.mul(view_dir2);
-    //カメラの位置およびカメラの向きを統合 
     view_pos.mul(view_dir);
-    //カメラの位置情報を登録
     Camera.setTransform(view_pos);
     // fps iint
     defaultIdealSleep = (long)((1000 << 16) / fps);
@@ -102,6 +107,27 @@ class ModelJone9 extends JFrame {
     setFocusable(true);
 
     this.startTime = System.currentTimeMillis();
+  }
+
+  private static BufferedImage loadImage(String fileName){
+    InputStream is = null;
+
+    try {
+      is = new FileInputStream(fileName);
+      BufferedImage img = ImageIO.read(is);
+      return img;
+    }
+    catch(IOException evn) {
+      throw new RuntimeException(evn);
+    }
+    finally {
+      if(is != null){
+        try{
+          is.close();
+        }
+        catch(IOException evn){}
+      }
+    }
   }
 
   private boolean debugMode;
