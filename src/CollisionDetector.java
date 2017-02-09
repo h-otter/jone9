@@ -21,15 +21,18 @@ class CollisionDetector extends Behavior {
   /** The shape that is watched for collision. */
   protected Shape3D collidingShape;
  
+  private ModelJone9 parent;
+
   /**
    * @param theShape
    *            Shape3D that is to be watched for collisions.
    * @param theBounds
    *            Bounds that define the active region for this behaviour
    */
-  public CollisionDetector(Shape3D theShape, Bounds theBounds) {
-    collidingShape = theShape;
+  public CollisionDetector(Shape3D theShape, Bounds theBounds, ModelJone9 parent) {
+    this.collidingShape = theShape;
     setSchedulingBounds(theBounds);
+    this.parent = parent;
   }
  
   /**
@@ -63,10 +66,11 @@ class CollisionDetector extends Behavior {
 	      System.out.println("Stopped colliding with  "
 	          + theLeaf.getName());
 	    } else {
-	      Node theLeaf = ((WakeupOnCollisionMovement) theCriterion)
-	          .getTriggeringPath().getObject();
-	      System.out.println("Moved whilst colliding with "
-	          + theLeaf.getName());
+	      // Node theLeaf = ((WakeupOnCollisionMovement) theCriterion)
+	      //     .getTriggeringPath().getObject();
+	      // System.out.println("Moved whilst colliding with "
+	      //     + theLeaf.getName());
+        parent.finish();
 	    }
 	    wakeupOn(oredCriteria);  
     }

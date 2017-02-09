@@ -66,7 +66,7 @@ class ModelJone9 extends JFrame {
     viewObjs.add((ViewInterface)player);
 
     // 当たり判定
-    CollisionDetector col = new CollisionDetector(player.getShape(), bounds);
+    CollisionDetector col = new CollisionDetector(player.getShape(), bounds, this);
     bg.addChild(col);
     
     // java3d 2nd init
@@ -108,7 +108,6 @@ class ModelJone9 extends JFrame {
     this();
     this.debugMode = true;
     System.out.println("[*] DEBUG MODE");
-
 
     for (int i = 0; i < this.viewObjs.size(); ++i){
       this.viewObjs.get(i).setDebugMode(this.debugMode);

@@ -24,6 +24,7 @@ class ViewClock extends ViewInterface {
     this.changeTimes = 0;
     this.minChangeMilliSec = defaultMinChangeMilliSec;
     this.lastChangedMillSec = 0;
+    this.finished = false;
 
     tg = new TransformGroup();
     tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
@@ -71,6 +72,10 @@ class ViewClock extends ViewInterface {
  * @param currentTime start proc time
  */
   public void clockwise(long currentTime) {
+    if (this.finished){
+      return;
+    }
+    
     if (this.lastChangedMillSec + this.minChangeMilliSec < currentTime && currentTime % rndRange == 0) {
       if (this.debugMode) {
         System.out.println("[+] changed speed of clockwise in " + (currentTime - this.lastChangedMillSec));
@@ -126,6 +131,7 @@ class ViewClock extends ViewInterface {
     }
   }
 
+  private boolean finished;
 /**
  * if finished game, call this
  */
@@ -134,5 +140,6 @@ class ViewClock extends ViewInterface {
       System.out.println("[+] Game is finished.");
     }
     this.speed = 0;
+    this.finished = true;
   }
 }
