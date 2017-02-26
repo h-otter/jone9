@@ -1,6 +1,6 @@
 # jone9
 
-This project developed in a class of our university.
+This project was developed in a class of our university.
 
 ## library
 
