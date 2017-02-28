@@ -15,6 +15,8 @@ import com.sun.j3d.utils.geometry.*;
 import com.sun.j3d.utils.universe.*;
 
 import java.io.*;
+import java.net.URL;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 
@@ -56,6 +58,7 @@ class ModelJone9 extends JFrame {
     universe.getViewer().getView().setMinimumFrameCycleTime(30);
     bg = new BranchGroup();
     Bounds bounds = new BoundingSphere(new Point3d(), 100.0); // 光源の影響範囲を球状に設定
+    
 
     BufferedImage image = loadImage("assets/background.jpg");
     Background background = new Background();
@@ -109,25 +112,31 @@ class ModelJone9 extends JFrame {
     this.startTime = System.currentTimeMillis();
   }
 
-  private static BufferedImage loadImage(String fileName){
-    InputStream is = null;
-
-    try {
-      is = new FileInputStream(fileName);
-      BufferedImage img = ImageIO.read(is);
-      return img;
-    }
-    catch(IOException evn) {
-      throw new RuntimeException(evn);
-    }
-    finally {
-      if(is != null){
-        try{
-          is.close();
-        }
-        catch(IOException evn){}
-      }
-    }
+  private BufferedImage loadImage(String fileName){
+		InputStream is = null;
+		try {
+		  //is = new FileInputStream(fileName);
+		  URL u = getClass().getResource(fileName);
+		  BufferedImage img;
+		  if(u == null) {
+				System.out.println("getClass failedin loadimage");
+		  	img = ImageIO.read(new File(fileName));
+			} else {
+				System.out.println(u);
+				img = ImageIO.read(u);
+			}
+			return img;
+		}
+		catch(IOException evn) {
+			throw new RuntimeException(evn);
+	  }
+		finally {
+	      if(is != null){
+	        try{
+	          is.close();
+	        } catch(IOException evn){}
+	      }
+	  }
   }
 
   private boolean debugMode;

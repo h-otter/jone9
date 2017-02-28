@@ -7,7 +7,7 @@ abstract class ViewInterface {
 
   protected ObjLoader po;
   public ViewInterface(String filename, String objectName){
-    System.out.println(filename + objectName);
+    // System.out.println(filename + objectName);
 
     po = new ObjLoader(filename, ObjectFile.RESIZE);
     this.collidingShape = (Shape3D)(po.getScene().getNamedObjects().get(objectName));

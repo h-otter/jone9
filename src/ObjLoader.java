@@ -1,6 +1,8 @@
 import java.awt.*;
 import javax.swing.*;
 import java.io.*;
+import java.net.URL;
+
 import com.sun.j3d.loaders.objectfile.ObjectFile;
 import com.sun.j3d.loaders.ParsingErrorException;
 import com.sun.j3d.loaders.IncorrectFormatException;
@@ -34,7 +36,14 @@ public class ObjLoader {
 		
 		try {
 			// 読んでシーンに貼り付け
-			s = f.load(filename);
+			URL u = getClass().getResource(filename);
+			if(u == null) {
+				System.out.println("getClass failed in objloader");
+				s = f.load(filename);
+			} else {
+				System.out.println(u);
+				s = f.load(u);
+			}
 			System.out.println("model: " + filename + " loaded.");
     }
 		catch(Exception e) {
